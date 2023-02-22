@@ -127,8 +127,10 @@ tasks.named("compileTestKotlin") {
     dependsOn(generateApiClient)
 }
 
-tasks.named("sonarqube") {
-    setProperty("sonar.projectKey", "Metatavu_plastep-product-information-services")
-    setProperty("sonar.organization", "metatavu-oy")
-    setProperty("sonar.host.url", "https://sonarcloud.io")
+sonarqube {
+    properties {
+        property("sonar.projectKey", "Metatavu_plastep-product-information-services")
+        property("sonar.organization", "metatavu-oy")
+        property("sonar.host.url", "https://sonarcloud.io")
+    }
 }
