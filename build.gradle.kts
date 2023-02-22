@@ -5,6 +5,7 @@ plugins {
     kotlin("plugin.allopen") version "1.7.22"
     id("io.quarkus")
     id("org.openapi.generator") version "6.2.1"
+    id("org.sonarqube") version "3.5.0.2730"
 }
 
 repositories {
@@ -124,4 +125,10 @@ tasks.named("compileKotlin") {
 
 tasks.named("compileTestKotlin") {
     dependsOn(generateApiClient)
+}
+
+tasks.named("sonarqube") {
+    setProperty("sonar.projectKey", "Metatavu_plastep-product-information-services")
+    setProperty("sonar.organization", "metatavu-oy")
+    setProperty("sonar.host.url", "https://sonarcloud.io")
 }
