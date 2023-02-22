@@ -79,6 +79,7 @@ val generateLemonClient = tasks.register("generateLemonClient", GenerateTask::cl
     setProperty("inputSpec",  "$rootDir/lemon/swagger.yaml")
     setProperty("outputDir", "$buildDir/generated/lemon-client")
     setProperty("packageName", "fi.metatavu.plastep.lemon.client")
+    setProperty("templateDir", "$rootDir/lemon/templates")
     this.configOptions.put("dateLibrary", "string")
     this.configOptions.put("collectionType", "array")
     this.configOptions.put("serializationLibrary", "jackson")
