@@ -1,0 +1,181 @@
+{
+  "id": 12347,
+  "name": "Test product 3",
+  "extra_name": "Test product 3 extra",
+  "sku": "000323",
+  "price": 0.0000,
+  "price_includes_tax": false,
+  "texts": [
+    {
+      "id": 23456,
+      "language_code": "",
+      "header_number": 0,
+      "text": "",
+      "text_plain": ""
+    }
+  ],
+  "units": [
+    {
+      "id": 345678,
+      "product_id": 12347,
+      "package": 0.000000,
+      "unit": "kpl",
+      "amount": 0.0000,
+      "code": "",
+      "default_amount": 0.0000,
+      "discount": 0.0000,
+      "price": 0.0000,
+      "price_per": 0.0000,
+      "use_for_pricing": true,
+      "use_for_purchase": false,
+      "use_for_sales": false,
+      "use_for_stock": true,
+      "volume": 0.000000,
+      "weight": 0.000000,
+      "package_weight": 0.000000,
+      "use_intrastat": false,
+      "intrastat_amount": 0.0000,
+      "default_amount_purchase": 0.0000,
+      "default_amount_production": 0.0000,
+      "handling_cost_id": 0
+    }
+  ],
+  "dimensions": "",
+  "is_inactive": false,
+  "is_non_stock": false,
+  "is_sellable": false,
+  "is_purchase_product": true,
+  "search_code": "Test product search",
+  "size_type": 0,
+  "type": 0,
+  "stock_unit": "",
+  "sales_price_taxful": 0.0000,
+  "sales_price_taxless": 0.0000,
+  "sales_account": "111111",
+  "taxrate_code": 0,
+  "cost_center": "",
+  "unit_id": 0,
+  "color_code": 0,
+  "mark_code": 0,
+  "model_code": 0,
+  "person_responsible_number": 0,
+  "stocks": [
+    {
+      "id": 34567,
+      "number": 1,
+      "free_saldo": 0.0000,
+      "saldo_incoming": 0.0,
+      "saldo_out": 0.0,
+      "is_default": true,
+      "in_stock": 0.0000,
+      "in_stock_min": 0.0000,
+      "Stock_inward": 0.0,
+      "previous_shelf": "",
+      "stock_description": "Varasto",
+      "stock_average_prchase_price": 0.0000,
+      "sizes": [],
+      "shelves": [
+        {
+          "id": 34567,
+          "product_id": 12347,
+          "stock_number": 1,
+          "stock_shelf": "",
+          "in_stock": 0,
+          "in_date": null,
+          "out_date": null,
+          "inventory_tmp": 0.0000,
+          "inventory_bit": false,
+          "inventory_date": null,
+          "shelf_type": 0,
+          "shelf_instock_min": 0.0000
+        }
+      ]
+    }
+  ],
+  "cn_code": "1111 22 33",
+  "ean_code": "",
+  "group_code": 11,
+  "ser_code": 0,
+  "height": 0,
+  "length": 0,
+  "width": 0,
+  "manufacturer": 0,
+  "origin": "",
+  "reference": "",
+  "warranty": 0,
+  "version": "",
+  "drawing_number": "",
+  "machine": {
+    "code": "",
+    "description": ""
+  },
+  "attribute_data": [
+    {
+      "id": 98765,
+      "name": "",
+      "product_id": 12347,
+      "codelist_id": 0,
+      "value": 0.0000,
+      "min": 0.0000,
+      "max": 0.0000,
+      "type": 0
+    }
+  ],
+  "suppliers": [
+    {
+      "supplier_id": 67890,
+      "product_id": 12347,
+      "name": "Test supplier",
+      "is_default": false,
+      "number": 888888,
+      "code": "",
+      "delivery_days": 0,
+      "note": "",
+      "url": "",
+      "description": "",
+      "description2": "",
+      "price": 0.0000,
+      "stock_amount": 0.0000,
+      "purchase_price": 0.0000,
+      "purchase_price_in_currency": 0.0000,
+      "currency_code": "EUR",
+      "discount": 0.0000,
+      "discount_code": "",
+      "price_update_date": null,
+      "stock_date": null,
+      "origin": "",
+      "pricefactor_orders": 0.0000,
+      "pricefactor_purchase_invoices": 0.0000
+    }
+  ],
+  "languages": [],
+  "attributes": [
+    {
+      "id": 1,
+      "name": "First attribute",
+      "selected": false
+    }
+  ],
+  "categories": [],
+  "is_serialnumber_followup": false,
+  "serialnumber_type": 0,
+  "is_batchfollowup": false,
+  "links": [
+    {
+      "id": 222222,
+      "application_id": 2,
+      "object_id": 12347,
+      "target": "example target",
+      "description": "",
+      "type": "",
+      "codelist_type": 1
+    }
+  ],
+  "abc": 0,
+  "vak": "",
+  "un": "",
+  "handedness": "",
+  "material": "",
+  "family": 0,
+  "lta": ""
+}
