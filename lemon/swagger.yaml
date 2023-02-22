@@ -1,0 +1,198 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: Lemonsoft ERP API-spec (partial)
+
+paths:
+  /api/auth/login:
+    post:
+      operationId: login
+      summary: Perform a login to the API
+      tags:
+        - Authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginPayload"
+        required: true
+      responses:
+        "200":
+          description: Login result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResult"
+
+  /api/products:
+    get:
+      tags:
+        - Product
+      summary: Get a list of products
+      operationId: listProducts
+      parameters:
+        - name: filter.name
+          in: query
+          schema:
+            type: string
+        - name: filter.sku
+          in: query
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: filter.with_images
+          in: query
+          schema:
+            type: boolean
+        - name: filter.modified_before
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: filter.modified_after
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: filter.attribute_id
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: filter.extra_name
+          in: query
+          schema:
+            type: string
+        - name: filter.category_id
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: filter.group_code
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: filter.show_models
+          in: query
+          schema:
+            type: boolean
+        - name: filter.show_nonactive
+          in: query
+          schema:
+            type: boolean
+        - name: filter.shelf
+          in: query
+          schema:
+            type: string
+        - name: filter.shelf_stock
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: filter.object_ids
+          in: query
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int32
+        - name: filter.page
+          in: query
+          description: Page number. If not provided, using default value of 1
+          schema:
+            type: integer
+            format: int32
+        - name: filter.page_size
+          in: query
+          description: Page size. If not provided, using default value of 10
+          schema:
+            type: integer
+            format: int32
+        - name: filter.search
+          in: query
+          schema:
+            type: string
+      security:
+        - SessionIdAuth: []
+      responses:
+        "200":
+          description: Product list results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductListResult"
+
+components:
+  securitySchemes:
+    SessionIdAuth:
+      type: apiKey
+      in: header
+      name: Session-Id
+
+  schemas:
+    LoginPayload:
+      required:
+        - UserName
+        - Password
+        - Database
+        - ApiKey
+      type: object
+      properties:
+        UserName:
+          type: string
+        Password:
+          type: string
+        Database:
+          type: string
+        ApiKey:
+          type: string
+    LoginResult:
+      type: object
+      required:
+        - session_id
+      properties:
+        message:
+          type: string
+          readOnly: true
+        code:
+          type: integer
+          readOnly: true
+        session_id:
+          type: string
+          readOnly: true
+        version:
+          type: string
+          readOnly: true
+
+    ProductListResult:
+      type: object
+      required:
+        - results
+      properties:
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/Product"
+
+    Product:
+      type: object
+      required:
+        - id
+        - sku
+        - name
+      properties:
+        id:
+          type: number
+          readOnly: true
+        sku:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
