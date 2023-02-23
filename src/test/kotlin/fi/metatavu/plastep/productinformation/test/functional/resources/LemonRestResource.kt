@@ -7,10 +7,7 @@ import io.quarkus.test.common.QuarkusTestResourceLifecycleManager
 import org.testcontainers.containers.GenericContainer
 
 import com.github.tomakehurst.wiremock.client.WireMock.*
-import fi.metatavu.plastep.lemon.client.models.LoginPayload
-import fi.metatavu.plastep.lemon.client.models.LoginResult
-import fi.metatavu.plastep.lemon.client.models.Product
-import fi.metatavu.plastep.lemon.client.models.ProductListResult
+import fi.metatavu.plastep.lemon.client.models.*
 import org.slf4j.LoggerFactory
 
 /**
@@ -39,7 +36,7 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
     }
 
     /**
-     * Create stubs for Lemon login endpoids
+     * Create stubs for Lemon login endpoints
      */
     private fun createLoginStubs() {
         val objectMapper = jacksonObjectMapper()
@@ -72,10 +69,30 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
         val objectMapper = jacksonObjectMapper()
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
 
-
         val products = (1..4)
             .map { "/lemon/test-product-${it}.json" }
             .map { objectMapper.readValue<Product>(this.javaClass.getResource(it)!!) }
+
+        val productStructures = (1..4)
+            .map { "/lemon/test-product-${it}-structure.json" }
+            .map { objectMapper.readValue<GetProductStructureResultResult>(this.javaClass.getResource(it)!!) }
+
+        products.forEachIndexed { index, product ->
+            stubFor(
+                get(urlPathEqualTo("/api/products/${product.id}"))
+                    .willReturn(jsonResponse(objectMapper.writeValueAsString(GetProductResult(
+                        result = product
+                    )), 200))
+            )
+
+            stubFor(
+                get(urlPathEqualTo("/api/products/${product.sku}/0/1"))
+                    .willReturn(jsonResponse(objectMapper.writeValueAsString(GetProductStructureResult(
+                        ok = true,
+                        result = productStructures[index]
+                    )), 200))
+            )
+        }
 
         stubFor(
             get(urlPathEqualTo("/api/products"))
