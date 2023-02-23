@@ -3,8 +3,7 @@ package fi.metatavu.plastep.productinformation.lemon
 import fi.metatavu.plastep.lemon.client.apis.AuthenticationApi
 import fi.metatavu.plastep.lemon.client.apis.ProductApi
 import fi.metatavu.plastep.lemon.client.infrastructure.ApiClient
-import fi.metatavu.plastep.lemon.client.models.LoginPayload
-import fi.metatavu.plastep.lemon.client.models.Product
+import fi.metatavu.plastep.lemon.client.models.*
 import org.eclipse.microprofile.config.inject.ConfigProperty
 import javax.annotation.PostConstruct
 import javax.enterprise.context.RequestScoped
@@ -38,6 +37,16 @@ class LemonClient {
     @PostConstruct
     fun init() {
         sessionId = null
+    }
+
+    /**
+     * Returns single product from Lemonsoft REST API
+     *
+     * @param productId product id
+     * @return product or null if not found
+     */
+    fun findProduct(productId: Int): Product? {
+        return getProductsApi().getProduct(id = productId).result
     }
 
     /**
@@ -81,13 +90,7 @@ class LemonClient {
         filterPageSize: Int? = null,
         filterSearch: String? = null
     ): Array<Product> {
-        ensureSession()
-
-        val productsApi = ProductApi(
-            basePath = lemonRestUrl
-        )
-
-        return productsApi.listProducts(
+        return getProductsApi().listProducts(
             filterName = filterName,
             filterSku = filterSku,
             filterWithImages = filterWithImages,
@@ -106,6 +109,35 @@ class LemonClient {
             filterPageSize = filterPageSize,
             filterSearch = filterSearch
         ).results
+    }
+
+    /**
+     * Returns product structure from Lemonsoft REST API
+     *
+     * @param productCode product code
+     * @param workNumber Work number. Use 0 for default structure
+     * @param level Structure level to be fetched
+     * @return product structure or null if not found
+     */
+    fun getProductStructure(productCode: String, workNumber: Int, level: Int): GetProductStructureResultResult? {
+        return getProductsApi().getProductStructure(
+            productCode = productCode,
+            workNumber = workNumber,
+            level = level
+        ).result
+    }
+
+    /**
+     * Returns initialized product API
+     *
+     * @return product API
+     */
+    private fun getProductsApi(): ProductApi {
+        ensureSession()
+
+        return ProductApi(
+            basePath = lemonRestUrl
+        )
     }
 
     /**
