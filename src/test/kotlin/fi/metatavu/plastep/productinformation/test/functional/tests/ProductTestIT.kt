@@ -18,12 +18,20 @@ import org.junit.jupiter.api.Test
 class ProductTestIT: AbstractResourceTest() {
 
     @Test
+    fun testFindProduct() = createTestBuilder().use {
+        val product = it.admin.product.find(id = 12345)
+        Assertions.assertEquals(12345, product.id)
+        Assertions.assertEquals("000123", product.productCode)
+        Assertions.assertEquals("Test product 1", product.name)
+    }
+
+    @Test
     fun testListProducts() {
         createTestBuilder().use {
             val allProducts = it.admin.product.list(page = null, pageSize = null)
             Assertions.assertEquals(4, allProducts.size)
 
-            Assertions.assertEquals("12345", allProducts[0].originId)
+            Assertions.assertEquals(12345, allProducts[0].id)
             Assertions.assertEquals("000123", allProducts[0].productCode)
 
             Assertions.assertArrayEquals(arrayOf("Test product 1", "Test product 2", "Test product 3", "Test product 4"), allProducts.map(Product::name).toTypedArray())
