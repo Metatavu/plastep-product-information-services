@@ -75,7 +75,7 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
 
         val productStructures = (1..4)
             .map { "/lemon/test-product-${it}-structure.json" }
-            .map { objectMapper.readValue<GetProductStructureResultResult>(this.javaClass.getResource(it)!!) }
+            .map { objectMapper.readValue<GetProductStructureResult>(this.javaClass.getResource(it)!!) }
 
         products.forEachIndexed { index, product ->
             stubFor(
@@ -87,10 +87,7 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
 
             stubFor(
                 get(urlPathEqualTo("/api/products/${product.sku}/0/1"))
-                    .willReturn(jsonResponse(objectMapper.writeValueAsString(GetProductStructureResult(
-                        ok = true,
-                        result = productStructures[index]
-                    )), 200))
+                    .willReturn(jsonResponse(objectMapper.writeValueAsString(productStructures[index]), 200))
             )
         }
 

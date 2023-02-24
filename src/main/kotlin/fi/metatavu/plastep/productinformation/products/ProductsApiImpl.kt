@@ -1,6 +1,6 @@
 package fi.metatavu.plastep.productinformation.products
 
-import fi.metatavu.plastep.api.abstracts.AbstractApi
+import fi.metatavu.plastep.productinformation.rest.AbstractApi
 import fi.metatavu.plastep.productinformation.lemon.LemonProductsController
 import fi.metatavu.plastep.productinformation.spec.ProductsApi
 import javax.enterprise.context.RequestScoped
@@ -19,7 +19,20 @@ class ProductsApiImpl: ProductsApi, AbstractApi() {
     @Inject
     lateinit var lemonProductTranslator: LemonProductTranslator
 
+    override fun findProduct(id: Int): Response {
+        if (!hasIntegrationRole()) {
+            return createForbidden("Only integration users can access this resource")
+        }
+
+        val lemonProduct = lemonProductsController.findProduct(id) ?: return createNotFoundWithMessage(PRODUCT, id)
+        return createOk(lemonProductTranslator.translate(lemonProduct))
+    }
+
     override fun listProducts(page: Int?, pageSize: Int?): Response {
+        if (!hasIntegrationRole()) {
+            return createForbidden("Only integration users can access this resource")
+        }
+
         val lemonProducts = lemonProductsController.listProducts(
             page ?: 0,
             pageSize ?: 10
