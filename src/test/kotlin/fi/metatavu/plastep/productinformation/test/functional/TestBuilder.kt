@@ -15,7 +15,8 @@ import java.net.URL
  */
 class TestBuilder(private val config: Map<String, String>): AbstractAccessTokenTestBuilder<ApiClient>() {
 
-    val admin: TestBuilderAuthentication = createAdmin()
+    val admin: TestBuilderAuthentication = createAuthentication("admin")
+    val integration: TestBuilderAuthentication = createAuthentication("integration")
     val empty: TestBuilderAuthentication = TestBuilderAuthentication(this, NullAccessTokenProvider())
     val notvalid: TestBuilderAuthentication = TestBuilderAuthentication(this, InvalidAccessTokenProvider())
 
@@ -27,15 +28,15 @@ class TestBuilder(private val config: Map<String, String>): AbstractAccessTokenT
     }
 
     /**
-     * Returns admin authenticated test resource
+     * Returns test resource authentication as given user
      *
-     * @return admin authenticated test resource
+     * @param username username of a test user
+     * @return authenticated test resource
      */
-    private fun createAdmin(): TestBuilderAuthentication {
+    private fun createAuthentication(username: String): TestBuilderAuthentication {
         val authServerUrl = config.getValue("quarkus.oidc.auth-server-url").substringBeforeLast("/").substringBeforeLast("/")
         val realm = getKeycloakRealm()
         val clientId = "ui"
-        val username = "admin"
         val password = "test"
         return TestBuilderAuthentication(this, KeycloakAccessTokenProvider(authServerUrl, realm, clientId, username, password, null))
     }

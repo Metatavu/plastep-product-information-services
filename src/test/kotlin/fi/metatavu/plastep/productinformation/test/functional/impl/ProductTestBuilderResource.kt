@@ -26,6 +26,16 @@ class ProductTestBuilderResource(
     }
 
     /**
+     * Finds product from API
+     *
+     * @param id id
+     * @return found product
+     */
+    fun find(id: Int): Product {
+        return api.findProduct(id = id)
+    }
+
+    /**
      * Lists products from API
      *
      * @param page page number. Page number starts from 0
@@ -40,6 +50,21 @@ class ProductTestBuilderResource(
 
     override fun clean(product: Product) {
         // Products are read-only, so no need to clean them
+    }
+
+    /**
+     * Asserts that find fails with given status
+     *
+     * @param expectedStatus expected status
+     * @param id id
+     */
+    fun assertFindFail(expectedStatus: Int, id: Int) {
+        try {
+            api.findProduct(id)
+            fail(String.format("Expected create to fail with status %d", expectedStatus))
+        } catch (ex: ClientException) {
+            assertClientExceptionStatus(expectedStatus, ex)
+        }
     }
 
     /**
