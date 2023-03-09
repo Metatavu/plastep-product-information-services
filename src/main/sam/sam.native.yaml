@@ -24,61 +24,6 @@ Resources:
         HttpApiEvent:
           Type: HttpApi
 
-  # PlastepProductInformationFiles:
-  #   Type: AWS::S3::Bucket
-
-  # PlastepProductInformationFilesBucketAllowPublicReadPolicy:
-  #   Type: AWS::S3::BucketPolicy
-  #   Properties:
-  #     Bucket: !Ref PlastepProductInformationFiles
-  #     PolicyDocument:
-  #       Version: "2012-10-17"
-  #       Statement:
-  #         - Effect: Allow
-  #           Action:
-  #             - s3:PutObject
-  #             - s3:GetObject
-  #             - s3:PutObjectAcl
-  #           Resource: !Join
-  #             - ''
-  #             - - 'arn:aws:s3:::'
-  #               - !Ref PlastepProductInformationFiles
-  #               - /*
-  #           Principal: "*"
-  #         - Effect: Allow
-  #           Action:
-  #             - s3:ListBucket
-  #             - s3:GetBucketLocation
-  #           Resource: !Join
-  #             - ''
-  #             - - 'arn:aws:s3:::'
-  #               - !Ref PlastepProductInformationFiles
-  #           Principal: "*"
-
-  # PlastepProductInformationFilesIAMUser:
-  #   Type: AWS::IAM::User
-  #   Properties:
-  #     Path: "/"
-  #     Policies:
-  #       - PolicyName: allow-s3
-  #         PolicyDocument:
-  #           Version: '2012-10-17'
-  #           Statement:
-  #             - Effect: Allow
-  #               Action:
-  #                 - s3:*
-  #               Resource: !Join
-  #                 - ''
-  #                 - - 'arn:aws:s3:::'
-  #                   - !Ref PlastepProductInformationFiles
-  #                   - /*
-
-  # PlastepProductInformationFilesIAMUserAccessKey:
-  #   Type: AWS::IAM::AccessKey
-  #   Properties:
-  #     UserName:
-  #       !Ref PlastepProductInformationFilesIAMUser
-
 Outputs:
   PlastepProductInformationServicesApi:
     Description: URL for application
