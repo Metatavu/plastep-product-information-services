@@ -3,7 +3,7 @@ package fi.metatavu.plastep.productinformation.products
 import fi.metatavu.plastep.productinformation.rest.AbstractApi
 import fi.metatavu.plastep.productinformation.lemon.LemonProductsController
 import fi.metatavu.plastep.productinformation.spec.ProductsApi
-import org.jboss.logging.Logger
+import org.slf4j.Logger
 import javax.enterprise.context.RequestScoped
 import javax.inject.Inject
 import javax.ws.rs.Consumes

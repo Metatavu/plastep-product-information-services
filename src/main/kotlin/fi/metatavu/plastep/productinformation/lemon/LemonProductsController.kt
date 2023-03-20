@@ -2,7 +2,7 @@ package fi.metatavu.plastep.productinformation.lemon
 
 import fi.metatavu.plastep.lemon.client.models.GetProductStructureResultResult
 import fi.metatavu.plastep.lemon.client.models.Product
-import org.jboss.logging.Logger
+import org.slf4j.Logger
 import javax.enterprise.context.ApplicationScoped
 import javax.inject.Inject
 
