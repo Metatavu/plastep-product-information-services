@@ -3,7 +3,6 @@ package fi.metatavu.plastep.productinformation.products
 import fi.metatavu.plastep.productinformation.rest.AbstractApi
 import fi.metatavu.plastep.productinformation.lemon.LemonProductsController
 import fi.metatavu.plastep.productinformation.spec.ProductsApi
-import org.slf4j.Logger
 import javax.enterprise.context.RequestScoped
 import javax.inject.Inject
 import javax.ws.rs.Consumes
@@ -20,11 +19,7 @@ class ProductsApiImpl: ProductsApi, AbstractApi() {
     @Inject
     lateinit var lemonProductTranslator: LemonProductTranslator
 
-    @Inject
-    lateinit var logger: Logger
-
     override fun findProduct(id: Int): Response {
-        logger.info("Finding product by id $id")
         if (!hasIntegrationRole()) {
             return createForbidden("Only integration users can access this resource")
         }
@@ -34,7 +29,6 @@ class ProductsApiImpl: ProductsApi, AbstractApi() {
     }
 
     override fun listProducts(page: Int?, pageSize: Int?): Response {
-        logger.info("Listing products")
         if (!hasIntegrationRole()) {
             return createForbidden("Only integration users can access this resource")
         }

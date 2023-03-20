@@ -2,7 +2,6 @@ package fi.metatavu.plastep.productinformation.lemon
 
 import fi.metatavu.plastep.lemon.client.models.GetProductStructureResultResult
 import fi.metatavu.plastep.lemon.client.models.Product
-import org.slf4j.Logger
 import javax.enterprise.context.ApplicationScoped
 import javax.inject.Inject
 
@@ -43,13 +42,10 @@ class LemonProductsController {
         page: Int,
         pageSize: Int
     ): Array<Product> {
-        logger.info("Listing products from Lemonsoft for page $page and page size $pageSize")
-        val lemonProducts = lemonClient.listProducts(
+        return lemonClient.listProducts(
             filterPage = page + 1,
             filterPageSize = pageSize,
         )
-        logger.info("Found ${lemonProducts.size} products from Lemonsoft")
-        return lemonProducts
     }
 
     /**
