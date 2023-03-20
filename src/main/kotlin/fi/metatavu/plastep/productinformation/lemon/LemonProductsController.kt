@@ -2,6 +2,7 @@ package fi.metatavu.plastep.productinformation.lemon
 
 import fi.metatavu.plastep.lemon.client.models.GetProductStructureResultResult
 import fi.metatavu.plastep.lemon.client.models.Product
+import org.jboss.logging.Logger
 import javax.enterprise.context.ApplicationScoped
 import javax.inject.Inject
 
@@ -13,6 +14,9 @@ class LemonProductsController {
 
     @Inject
     lateinit var lemonClient: LemonClient
+
+    @Inject
+    lateinit var logger: Logger
 
     /**
      * Find product from Lemonsoft
@@ -39,10 +43,13 @@ class LemonProductsController {
         page: Int,
         pageSize: Int
     ): Array<Product> {
-        return lemonClient.listProducts(
+        logger.info("Listing products from Lemonsoft for page $page and page size $pageSize")
+        val lemonProducts = lemonClient.listProducts(
             filterPage = page + 1,
             filterPageSize = pageSize,
         )
+        logger.info("Found ${lemonProducts.size} products from Lemonsoft")
+        return lemonProducts
     }
 
     /**
