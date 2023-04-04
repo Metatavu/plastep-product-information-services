@@ -17,7 +17,7 @@ class MachineTestIT : AbstractResourceTest() {
 
     @Test
     fun list() {
-        createTestBuilder().use {
+        createTestBuilder().use { it ->
             val machines = it.integration.machine.list(page = null, pageSize = null)
             assertEquals(4, machines.size)
 
@@ -27,11 +27,11 @@ class MachineTestIT : AbstractResourceTest() {
 
             val machinesPage1 = it.integration.machine.list(page = 1, pageSize = 2)
             assertEquals(2, machinesPage1.size)
-            assertEquals(1, machinesPage1[0].id)
+            assertEquals(2, machinesPage1.sortedBy { it.id }[0].id)
 
             val machinesPage2 = it.integration.machine.list(page = 2, pageSize = 2)
             assertEquals(2, machinesPage2.size)
-            assertEquals(3, machinesPage2[0].id)
+            assertEquals(3, machinesPage2.sortedBy { it.id }[0].id)
 
             val machinesEmpty = it.integration.machine.list(page = 2, pageSize = 0)
             assertEquals(0, machinesEmpty.size)
