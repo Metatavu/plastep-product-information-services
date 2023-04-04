@@ -192,9 +192,9 @@ paths:
   /api/production/machines:
     get:
       tags:
-        - Product
-      summary: Get a list of products
-      operationId: listProducts
+        - Machine
+      summary: Get a list of machines
+      operationId: listMachines
       parameters:
         - name: filter.code
           in: query
