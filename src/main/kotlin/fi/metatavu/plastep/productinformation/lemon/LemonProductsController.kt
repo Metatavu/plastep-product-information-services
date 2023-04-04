@@ -43,13 +43,10 @@ class LemonProductsController {
         page: Int,
         pageSize: Int
     ): Array<Product> {
-        logger.info("Listing products from Lemonsoft for page $page and page size $pageSize")
-        val lemonProducts = lemonClient.listProducts(
+        return lemonClient.listProducts(
             filterPage = page + 1,
             filterPageSize = pageSize,
         )
-        logger.info("Found ${lemonProducts.size} products from Lemonsoft")
-        return lemonProducts
     }
 
     /**

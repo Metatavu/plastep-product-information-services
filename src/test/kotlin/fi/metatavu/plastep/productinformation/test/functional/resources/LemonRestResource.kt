@@ -3,12 +3,11 @@ package fi.metatavu.plastep.productinformation.test.functional.resources
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import io.quarkus.test.common.QuarkusTestResourceLifecycleManager
-import org.testcontainers.containers.GenericContainer
-
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import fi.metatavu.plastep.lemon.client.models.*
+import io.quarkus.test.common.QuarkusTestResourceLifecycleManager
 import org.slf4j.LoggerFactory
+import org.testcontainers.containers.GenericContainer
 
 /**
  * Resource for Lemon mock service container
@@ -25,6 +24,7 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
 
         createLoginStubs()
         createProductStubs()
+        createMachineStubs()
 
         return mapOf(
             "lemon.rest.url" to "http://$host:$port",
@@ -59,6 +59,93 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
                         version = "1.2.3"
                     )
                 ), 200))
+        )
+    }
+
+    /**
+     * Machine listing endpoints stubs
+     */
+    private fun createMachineStubs() {
+        val objectMapper = jacksonObjectMapper()
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+
+        val machines = (1..4)
+            .map { "/lemon/test-machine-${it}.json" }
+            .map { objectMapper.readValue<Machine>(this.javaClass.getResource(it)!!) }
+
+        stubFor(
+            get(urlPathEqualTo("/api/production/machines"))
+                .withQueryParams(
+                    mapOf(
+                        "filter.page" to equalTo("1"),
+                        "filter.page_size" to equalTo("10")
+                    )
+                )
+                .willReturn(
+                    jsonResponse(
+                        objectMapper.writeValueAsString(
+                            MachineListResult(
+                                results = machines.toTypedArray()
+                            )
+                        ), 200
+                    )
+                )
+        )
+
+        stubFor(
+            get(urlPathEqualTo("/api/production/machines"))
+                .withQueryParams(
+                    mapOf(
+                        "filter.page" to equalTo("2"),
+                        "filter.page_size" to equalTo("2")
+                    )
+                )
+                .willReturn(
+                    jsonResponse(
+                        objectMapper.writeValueAsString(
+                            MachineListResult(
+                                results = machines.subList(1, 3).toTypedArray()
+                            )
+                        ), 200
+                    )
+                )
+        )
+
+        stubFor(
+            get(urlPathEqualTo("/api/production/machines"))
+                .withQueryParams(
+                    mapOf(
+                        "filter.page" to equalTo("3"),
+                        "filter.page_size" to equalTo("2")
+                    )
+                )
+                .willReturn(
+                    jsonResponse(
+                        objectMapper.writeValueAsString(
+                            MachineListResult(
+                                results = machines.subList(2, 4).toTypedArray()
+                            )
+                        ), 200
+                    )
+                )
+        )
+
+        stubFor(
+            get(urlPathEqualTo("/api/production/machines"))
+                .withQueryParams(
+                    mapOf(
+                        "filter.page_size" to equalTo("0")
+                    )
+                )
+                .willReturn(
+                    jsonResponse(
+                        objectMapper.writeValueAsString(
+                            MachineListResult(
+                                results = arrayOf()
+                            )
+                        ), 200
+                    )
+                )
         )
     }
 
