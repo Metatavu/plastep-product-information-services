@@ -24,7 +24,6 @@ class ProductsApiImpl: ProductsApi, AbstractApi() {
     lateinit var logger: Logger
 
     override fun findProduct(id: Int): Response {
-        logger.info("Finding product by id $id")
         if (!hasIntegrationRole()) {
             return createForbidden("Only integration users can access this resource")
         }
@@ -34,7 +33,6 @@ class ProductsApiImpl: ProductsApi, AbstractApi() {
     }
 
     override fun listProducts(page: Int?, pageSize: Int?): Response {
-        logger.info("Listing products")
         if (!hasIntegrationRole()) {
             return createForbidden("Only integration users can access this resource")
         }

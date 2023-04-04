@@ -154,7 +154,6 @@ class LemonClient {
         filterPageSize: Int? = null,
         filterSearch: String? = null
     ): Array<Machine> {
-        println("Listing machines page $filterPage size $filterPageSize")
         return getMachinesApi().listMachines(
             filterCode = filterCode,
             filterDescription = filterDescription,
