@@ -12,7 +12,8 @@ class LemonMachineTranslator : AbstractTranslator<Machine, fi.metatavu.plastep.p
     override fun translate(entity: Machine): fi.metatavu.plastep.productinformation.model.Machine {
         return fi.metatavu.plastep.productinformation.model.Machine(
             id = entity.id,
-            code = entity.code
+            code = entity.code,
+            description = entity.description
         )
     }
 }

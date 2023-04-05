@@ -132,7 +132,6 @@ class LemonClient {
      * Returns machines from Lemonsoft REST API
      *
      * @param filterCode filter by code
-     * @param filterDescription filter by description
      * @param filterType filter by type
      * @param filterIsDisabled filter by is disabled
      * @param filterObjectIds filter by object ids
@@ -142,7 +141,6 @@ class LemonClient {
      */
     fun listMachines(
         filterCode: String? = null,
-        filterDescription: String? = null,
         filterType: Int? = null,
         filterIsDisabled: Boolean? = null,
         filterObjectIds: Array<Int>? = null,
@@ -152,7 +150,6 @@ class LemonClient {
     ): Array<Machine> {
         return getMachinesApi().listMachines(
             filterCode = filterCode,
-            filterDescription = filterDescription,
             filterType = filterType,
             filterIsDisabled = filterIsDisabled,
             filterObjectIds = filterObjectIds,
