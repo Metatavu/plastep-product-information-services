@@ -78,7 +78,7 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
                 .withQueryParams(
                     mapOf(
                         "filter.page" to equalTo("1"),
-                        "filter.page_size" to equalTo("10")
+                        "filter.page_size" to equalTo("50")
                     )
                 )
                 .willReturn(
