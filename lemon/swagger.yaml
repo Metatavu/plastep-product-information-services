@@ -209,16 +209,6 @@ paths:
           schema:
             type: integer
             format: int32
-        - name: filter.hour_price
-          in: query
-          schema:
-            type: number
-            format: double
-        - name: filter.capacity
-          in: query
-          schema:
-            type: number
-            format: double
         - name: filter.is_disabled
           in: query
           schema:
@@ -394,8 +384,6 @@ components:
           type: integer
           format: int64
         code:
-          type: string
-        description:
           type: string
 
     MachineListResult:

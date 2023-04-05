@@ -23,7 +23,7 @@ class MachinesApiImpl : MachinesApi, AbstractApi() {
 
         val lemonMachines = lemonMachinesController.listMachines(
             page ?: 0,
-            pageSize ?: 10
+            pageSize ?: 50
         )
 
         return createOk(lemonMachines.map { lemonMachineTranslator.translate(it) })

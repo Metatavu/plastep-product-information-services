@@ -134,8 +134,6 @@ class LemonClient {
      * @param filterCode filter by code
      * @param filterDescription filter by description
      * @param filterType filter by type
-     * @param filterHourPrice filter by hour price
-     * @param filterCapacity filter by capacity
      * @param filterIsDisabled filter by is disabled
      * @param filterObjectIds filter by object ids
      * @param filterPage Page number.
@@ -146,8 +144,6 @@ class LemonClient {
         filterCode: String? = null,
         filterDescription: String? = null,
         filterType: Int? = null,
-        filterHourPrice: Double? = null,
-        filterCapacity: Double? = null,
         filterIsDisabled: Boolean? = null,
         filterObjectIds: Array<Int>? = null,
         filterPage: Int? = null,
@@ -158,8 +154,6 @@ class LemonClient {
             filterCode = filterCode,
             filterDescription = filterDescription,
             filterType = filterType,
-            filterHourPrice = filterHourPrice,
-            filterCapacity = filterCapacity,
             filterIsDisabled = filterIsDisabled,
             filterObjectIds = filterObjectIds,
             filterPage = filterPage,

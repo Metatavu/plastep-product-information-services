@@ -26,7 +26,6 @@ class MachineTestBuilderResource(
         return MachinesApi(ApiTestSettings.apiBasePath)
     }
 
-
     /**
      * Lists machines from API
      *

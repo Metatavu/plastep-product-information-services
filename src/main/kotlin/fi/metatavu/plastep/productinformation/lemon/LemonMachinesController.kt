@@ -24,11 +24,10 @@ class LemonMachinesController {
         page: Int,
         pageSize: Int
     ): Array<Machine> {
-        val machines = lemonClient.listMachines(
+        return lemonClient.listMachines(
             filterPage = page + 1,
             filterPageSize = pageSize,
         )
-        return machines
     }
 
 }
