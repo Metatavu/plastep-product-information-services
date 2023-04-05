@@ -1,6 +1,7 @@
 package fi.metatavu.plastep.productinformation.lemon
 
 import fi.metatavu.plastep.lemon.client.apis.AuthenticationApi
+import fi.metatavu.plastep.lemon.client.apis.MachineApi
 import fi.metatavu.plastep.lemon.client.apis.ProductApi
 import fi.metatavu.plastep.lemon.client.infrastructure.ApiClient
 import fi.metatavu.plastep.lemon.client.models.*
@@ -128,6 +129,37 @@ class LemonClient {
     }
 
     /**
+     * Returns machines from Lemonsoft REST API
+     *
+     * @param filterCode filter by code
+     * @param filterType filter by type
+     * @param filterIsDisabled filter by is disabled
+     * @param filterObjectIds filter by object ids
+     * @param filterPage Page number.
+     * @param filterPageSize Page size.
+     *  @param filterSearch filter by search
+     */
+    fun listMachines(
+        filterCode: String? = null,
+        filterType: Int? = null,
+        filterIsDisabled: Boolean? = null,
+        filterObjectIds: Array<Int>? = null,
+        filterPage: Int? = null,
+        filterPageSize: Int? = null,
+        filterSearch: String? = null
+    ): Array<Machine> {
+        return getMachinesApi().listMachines(
+            filterCode = filterCode,
+            filterType = filterType,
+            filterIsDisabled = filterIsDisabled,
+            filterObjectIds = filterObjectIds,
+            filterPage = filterPage,
+            filterPageSize = filterPageSize,
+            filterSearch = filterSearch
+        ).results
+    }
+
+    /**
      * Returns initialized product API
      *
      * @return product API
@@ -136,6 +168,19 @@ class LemonClient {
         ensureSession()
 
         return ProductApi(
+            basePath = lemonRestUrl
+        )
+    }
+
+    /**
+     * Returns initialized machine API
+     *
+     * @return machine API
+     */
+    private fun getMachinesApi(): MachineApi {
+        ensureSession()
+
+        return MachineApi(
             basePath = lemonRestUrl
         )
     }
