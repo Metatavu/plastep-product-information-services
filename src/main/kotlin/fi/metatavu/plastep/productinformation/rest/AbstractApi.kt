@@ -90,6 +90,7 @@ abstract class AbstractApi {
 
     companion object {
         const val PRODUCT = "Product"
+        const val WORK_STAGE = "Work stage"
     }
 
 }
