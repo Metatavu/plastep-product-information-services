@@ -244,6 +244,83 @@ paths:
               schema:
                 $ref: "#/components/schemas/MachineListResult"
 
+  /api/production/main_ws/{id}:
+    get:
+      tags:
+        - WorkStages
+      summary: Find main work stage with given id
+      operationId: findWorkStage
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      security:
+        - SessionIdAuth: []
+      responses:
+        "200":
+          description: Found main work stage
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MainWorkStageResponse"
+        "default":
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /api/production/main_ws/changed:
+    get:
+      tags:
+        - WorkStages
+      summary: Get a list of work stages
+      operationId: listWorkStages
+      parameters:
+        - name: filter.updated_after
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+        - name: filter.updated_before
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+        - name: filter.state
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: filter.page
+          in: query
+          required: true
+          description: Page number. If not provided, using default value of 1
+          schema:
+            type: integer
+            format: int32
+        - name: filter.page_size
+          in: query
+          required: true
+          description: Page size. If not provided, using default value of 10
+          schema:
+            type: integer
+            format: int32
+      security:
+        - SessionIdAuth: []
+      responses:
+        "200":
+          description: Work stages list results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkStageListResponse"
+
 components:
   securitySchemes:
     SessionIdAuth:
@@ -252,6 +329,21 @@ components:
       name: Session-Id
 
   schemas:
+    Error:
+      type: object
+      description: Error object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          readOnly: true
+          type: integer
+          format: int32
+        message:
+          readOnly: true
+          type: string
+
     LoginPayload:
       required:
         - UserName
@@ -393,3 +485,113 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Machine"
+
+    WorkStageListResponse:
+      description: "Work stage list response"
+      type: object
+      required:
+        - ok
+        - results
+      properties:
+        ok:
+          type: boolean
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/WorkStageListItem"
+
+    WorkStageListItem:
+      type: object
+      description: "Work stage list item"
+      required:
+        - id
+        - state
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: "Work stage id"
+        state:
+          type: integer
+          format: int32
+          description: "Work stage state"
+          
+    MainWorkStageResponse:
+      type: object
+      description: "Main work stage response"
+      required:
+        - ok
+        - result
+      properties:
+        ok:
+          type: boolean
+        result:
+          $ref: "#/components/schemas/MainWorkStage"
+
+    MainWorkStage:
+      type: object
+      description: "Main work stage object"
+      required:
+        - id
+        - state
+        - product_code
+        - worknumber
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: "Main work stage id"
+        state:
+          type: integer
+          format: int32
+          description: "Main work stage state"
+        product_code:
+          type: string
+          description: "Product code"
+        comment:
+          type: string
+          description: "Comment of main work stage"
+        worknumber:
+          type: integer
+          format: int64
+          description: "Work number of main work stage"
+        sub_workstages:
+          type: array
+          items:
+            $ref: "#/components/schemas/SubWorkStage"
+
+    SubWorkStage:
+      type: object
+      description: "Sub work stage object"
+      required:
+        - id
+        - state
+        - machine_id
+        - machine_code
+        - description
+        - product_code
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: "Sub work stage id"
+        state:
+          type: integer
+          format: int32
+          description: "Sub work stage state"
+        machine_id:
+          type: integer
+          format: int64
+          description: "Machine id"
+        machine_code:
+          type: string
+          description: "Machine code"
+        description:
+          type: string
+          description: "Description of sub work stage"
+        description2:
+          type: string
+          description: "Description2 of sub work stage"
+        product_code:
+          type: string
+          description: "Product code"
