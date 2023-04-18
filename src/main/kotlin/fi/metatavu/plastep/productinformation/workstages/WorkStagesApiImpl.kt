@@ -5,7 +5,6 @@ import fi.metatavu.plastep.productinformation.model.WorkStageState
 import fi.metatavu.plastep.productinformation.rest.AbstractApi
 import fi.metatavu.plastep.productinformation.spec.WorkStagesApi
 import java.time.LocalDate
-import java.time.OffsetDateTime
 import javax.enterprise.context.RequestScoped
 import javax.inject.Inject
 import javax.ws.rs.Consumes
