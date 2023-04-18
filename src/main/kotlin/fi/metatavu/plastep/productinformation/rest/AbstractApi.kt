@@ -59,6 +59,16 @@ abstract class AbstractApi {
     }
 
     /**
+     * Constructs bad request response
+     *
+     * @param message message
+     * @return response
+     */
+    protected fun createBadRequest(message: String): Response {
+        return createError(Response.Status.BAD_REQUEST, message)
+    }
+
+    /**
      * Creates not found response with given parameters
      *
      * @param target target of the find method

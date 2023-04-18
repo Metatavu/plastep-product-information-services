@@ -8,7 +8,7 @@ import fi.metatavu.plastep.lemon.client.infrastructure.ApiClient
 import fi.metatavu.plastep.lemon.client.models.*
 import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.slf4j.Logger
-import java.time.OffsetDateTime
+import java.time.LocalDate
 import javax.annotation.PostConstruct
 import javax.enterprise.context.RequestScoped
 import javax.inject.Inject
@@ -193,8 +193,8 @@ class LemonClient {
      * @return list of work stages
      */
     fun listWorkStages(
-        filterUpdatedAfter: OffsetDateTime,
-        filterUpdatedBefore: OffsetDateTime,
+        filterUpdatedAfter: LocalDate,
+        filterUpdatedBefore: LocalDate,
         filterPage: Int,
         filterPageSize: Int,
         filterState: Int? = null

@@ -2,7 +2,7 @@ package fi.metatavu.plastep.productinformation.lemon
 
 import fi.metatavu.plastep.lemon.client.models.MainWorkStage
 import org.slf4j.Logger
-import java.time.OffsetDateTime
+import java.time.LocalDate
 import javax.enterprise.context.ApplicationScoped
 import javax.inject.Inject
 
@@ -38,8 +38,8 @@ class LemonWorkStagesController {
      * @return list of workStages
      */
     fun listWorkStages(
-        updatedAfter: OffsetDateTime,
-        updatedBefore: OffsetDateTime,
+        updatedAfter: LocalDate,
+        updatedBefore: LocalDate,
         page: Int,
         pageSize: Int
     ): List<MainWorkStage> {

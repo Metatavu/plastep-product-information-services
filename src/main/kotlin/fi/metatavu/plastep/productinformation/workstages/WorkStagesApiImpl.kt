@@ -4,6 +4,7 @@ import fi.metatavu.plastep.productinformation.lemon.LemonWorkStagesController
 import fi.metatavu.plastep.productinformation.model.WorkStageState
 import fi.metatavu.plastep.productinformation.rest.AbstractApi
 import fi.metatavu.plastep.productinformation.spec.WorkStagesApi
+import java.time.LocalDate
 import java.time.OffsetDateTime
 import javax.enterprise.context.RequestScoped
 import javax.inject.Inject
@@ -27,21 +28,29 @@ class WorkStagesApiImpl: WorkStagesApi, AbstractApi() {
     }
 
     override fun listWorkStages(
-        updatedAfter: OffsetDateTime,
-        updatedBefore: OffsetDateTime,
+        updatedAfter: String,
+        updatedBefore: String,
         page: Int?,
         pageSize: Int?,
         state: WorkStageState?
     ): Response {
+        val parsedUpdatedAfter: LocalDate?
+        val parsedUpdatedBefore: LocalDate?
+
+        try {
+            parsedUpdatedAfter = LocalDate.parse(updatedAfter)
+            parsedUpdatedBefore = LocalDate.parse(updatedBefore)
+        } catch (e: Exception) {
+            return createBadRequest("Invalid date format for updatedAfter: $updatedAfter or updatedBefore: $updatedBefore")
+        }
+
         val workStages = lemonWorkStagesController.listWorkStages(
-            updatedAfter = updatedAfter,
-            updatedBefore = updatedBefore,
-            page = page ?: 1,
-            pageSize = pageSize ?: 100,
+                updatedAfter = parsedUpdatedAfter,
+                updatedBefore = parsedUpdatedBefore,
+                page = page ?: 1,
+                pageSize = pageSize ?: 100,
         )
 
         return createOk(workStages.map(lemonWorkStagesTranslator::translate))
     }
-
-
 }

@@ -7,6 +7,7 @@ import fi.metatavu.plastep.productinformation.test.functional.TestBuilder
 import fi.metatavu.plastep.productinformation.test.functional.impl.MachineTestBuilderResource
 import fi.metatavu.plastep.productinformation.test.functional.settings.ApiTestSettings
 import fi.metatavu.plastep.productinformation.test.functional.impl.ProductTestBuilderResource
+import fi.metatavu.plastep.productinformation.test.functional.impl.WorkStageTestBuilderResource
 
 /**
  * Test builder authentication
@@ -25,6 +26,7 @@ class TestBuilderAuthentication(
 
     val product = ProductTestBuilderResource(testBuilder, this.accessTokenProvider, createClient())
     val machine = MachineTestBuilderResource(testBuilder, this.accessTokenProvider, createClient())
+    val workStages = WorkStageTestBuilderResource(testBuilder, this.accessTokenProvider, createClient())
 
     override fun createClient(authProvider: AccessTokenProvider): ApiClient {
         val result = ApiClient(ApiTestSettings.apiBasePath)

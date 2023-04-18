@@ -25,6 +25,7 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
         createLoginStubs()
         createProductStubs()
         createMachineStubs()
+        createMainWorkStageStubs()
 
         return mapOf(
             "lemon.rest.url" to "http://$host:$port",
@@ -220,6 +221,60 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
                     results = arrayOf()
                 )), 200))
         )
+    }
+
+    /**
+     * Work stage listing endpoints stubs
+     */
+    private fun createMainWorkStageStubs() {
+        val objectMapper = jacksonObjectMapper()
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+
+        val mainWorkStages = (1..3)
+            .map { "/lemon/test-main-work-stage-${it}.json" }
+            .map { objectMapper.readValue<WorkStageListItem>(this.javaClass.getResource(it)!!) }
+
+        val mainWorkStagesWithSubWorkStages = (1..3)
+            .map { "/lemon/test-main-work-stage-with-sub-work-stages-${it}.json" }
+            .map { objectMapper.readValue<MainWorkStage>(this.javaClass.getResource(it)!!) }
+
+        stubFor(
+            get(urlPathEqualTo("/api/production/main_ws/changed"))
+                .withQueryParams(
+                    mapOf(
+                        "filter.updated_after" to equalTo("1971-01-01"),
+                        "filter.updated_before" to equalTo("2030-01-01"),
+                        "filter.page" to equalTo("1"),
+                        "filter.page_size" to equalTo("50")
+                    )
+                )
+                .willReturn(
+                    jsonResponse(
+                        objectMapper.writeValueAsString(
+                            WorkStageListResponse(
+                                results = mainWorkStages.toTypedArray(),
+                                ok = true
+                            )
+                        ), 200
+                    )
+                )
+        )
+
+        mainWorkStagesWithSubWorkStages.forEach { mainWorkStage ->
+            stubFor(
+                get(urlPathEqualTo("/api/production/main_ws/${mainWorkStage.id}"))
+                    .willReturn(
+                        jsonResponse(
+                            objectMapper.writeValueAsString(
+                                MainWorkStageResponse(
+                                    result = mainWorkStage,
+                                    ok = true
+                                )
+                            ), 200
+                        )
+                    )
+            )
+        }
     }
 
     override fun stop() {
