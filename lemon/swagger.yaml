@@ -565,6 +565,7 @@ components:
       description: "Sub work stage object"
       required:
         - id
+        - workphase_id
         - state
         - machine_id
         - machine_code
@@ -575,6 +576,10 @@ components:
           type: integer
           format: int64
           description: "Sub work stage id"
+        workphase_id:
+          type: integer
+          format: int32
+          description: "Sub work stage phase id"
         state:
           type: integer
           format: int32

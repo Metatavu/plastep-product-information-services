@@ -41,6 +41,7 @@ class WorkStagesTestIT: AbstractResourceTest() {
         val subWorkStage1 = subWorkStages.find{ it.id == 17713L }
         assertNotNull(subWorkStage1)
         assertEquals(subWorkStage1!!.productCode, "161480")
+        assertEquals(subWorkStage1.workPhaseId, 13)
         assertEquals(subWorkStage1.state, WorkStageState.IN_PROGRESS)
         assertEquals(subWorkStage1.description, "Mittaus ja laadunvalvonta")
         assertEquals(subWorkStage1.machineCode, "KP muut")
@@ -49,6 +50,7 @@ class WorkStagesTestIT: AbstractResourceTest() {
         val subWorkStage2 = subWorkStages.find{ it.id == 17714L }
         assertNotNull(subWorkStage2)
         assertEquals(subWorkStage2!!.productCode, "161480")
+        assertEquals(subWorkStage2.workPhaseId, 11)
         assertEquals(subWorkStage2.state, WorkStageState.COMPLETED)
         assertEquals(subWorkStage2.description, "UÄ-hitsaus")
         assertEquals(subWorkStage2.machineCode, "KP muut")
@@ -57,6 +59,7 @@ class WorkStagesTestIT: AbstractResourceTest() {
         val subWorkStage3 = subWorkStages.find{ it.id == 17715L }
         assertNotNull(subWorkStage3)
         assertEquals(subWorkStage3!!.productCode, "161480")
+        assertEquals(subWorkStage3.workPhaseId, 2)
         assertEquals(subWorkStage3.state, WorkStageState.COMPLETED)
         assertEquals(subWorkStage3.description, "Kokoonpano")
         assertEquals(subWorkStage3.machineCode, "KP muut")
