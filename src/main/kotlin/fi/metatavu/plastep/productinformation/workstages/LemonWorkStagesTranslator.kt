@@ -37,6 +37,7 @@ class LemonWorkStagesTranslator : AbstractTranslator<fi.metatavu.plastep.lemon.c
     private fun translateSubWorkStage(lemonSubWorkStage: fi.metatavu.plastep.lemon.client.models.SubWorkStage): SubWorkStage {
         return SubWorkStage(
             id = lemonSubWorkStage.id,
+            workPhaseId = lemonSubWorkStage.workphaseId,
             state = translateWorkStageState(lemonSubWorkStage.state),
             machineId = lemonSubWorkStage.machineId,
             machineCode = lemonSubWorkStage.machineCode,
