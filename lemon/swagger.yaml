@@ -490,10 +490,10 @@ components:
       description: "Work stage list response"
       type: object
       required:
-        - ok
+        - has_errors
         - results
       properties:
-        ok:
+        has_errors:
           type: boolean
         results:
           type: array
