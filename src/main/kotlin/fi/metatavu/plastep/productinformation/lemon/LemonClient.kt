@@ -207,7 +207,7 @@ class LemonClient {
             filterState = filterState
         )
 
-        return if (response.ok) {
+        return if (!response.hasErrors) {
             response.results
         } else {
             logger.error("Failed to list work stages")
