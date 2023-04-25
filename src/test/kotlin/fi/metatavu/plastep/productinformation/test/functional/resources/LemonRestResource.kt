@@ -253,7 +253,7 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
                         objectMapper.writeValueAsString(
                             WorkStageListResponse(
                                 results = mainWorkStages.toTypedArray(),
-                                ok = true
+                                hasErrors = false
                             )
                         ), 200
                     )

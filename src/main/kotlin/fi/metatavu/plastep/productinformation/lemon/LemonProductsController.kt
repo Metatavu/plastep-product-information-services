@@ -44,7 +44,7 @@ class LemonProductsController {
         pageSize: Int
     ): Array<Product> {
         return lemonClient.listProducts(
-            filterPage = page + 1,
+            filterPage = page,
             filterPageSize = pageSize,
         )
     }
