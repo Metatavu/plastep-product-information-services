@@ -22,7 +22,7 @@ class MachinesApiImpl : MachinesApi, AbstractApi() {
         }
 
         val lemonMachines = lemonMachinesController.listMachines(
-            page ?: 0,
+            page ?: 1,
             pageSize ?: 50
         )
 
