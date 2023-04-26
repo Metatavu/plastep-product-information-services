@@ -35,7 +35,7 @@ class LemonProductsController {
     /**
      * Lists products from Lemonsoft
      *
-     * @param page page number. Page number starts from 0
+     * @param page page number. Page number starts from 1
      * @param pageSize page size.
      * @return list of products
      */
@@ -44,7 +44,7 @@ class LemonProductsController {
         pageSize: Int
     ): Array<Product> {
         return lemonClient.listProducts(
-            filterPage = page + 1,
+            filterPage = page,
             filterPageSize = pageSize,
         )
     }

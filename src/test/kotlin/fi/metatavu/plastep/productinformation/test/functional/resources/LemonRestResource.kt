@@ -97,7 +97,7 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
             get(urlPathEqualTo("/api/production/machines"))
                 .withQueryParams(
                     mapOf(
-                        "filter.page" to equalTo("2"),
+                        "filter.page" to equalTo("1"),
                         "filter.page_size" to equalTo("2")
                     )
                 )
@@ -116,7 +116,7 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
             get(urlPathEqualTo("/api/production/machines"))
                 .withQueryParams(
                     mapOf(
-                        "filter.page" to equalTo("3"),
+                        "filter.page" to equalTo("2"),
                         "filter.page_size" to equalTo("2")
                     )
                 )
@@ -193,7 +193,7 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
         stubFor(
             get(urlPathEqualTo("/api/products"))
                 .withQueryParams(mapOf(
-                    "filter.page" to equalTo("2"),
+                    "filter.page" to equalTo("1"),
                     "filter.page_size" to equalTo("2")
                 ))
                 .willReturn(jsonResponse(objectMapper.writeValueAsString(ProductListResult(
@@ -204,7 +204,7 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
         stubFor(
             get(urlPathEqualTo("/api/products"))
                 .withQueryParams(mapOf(
-                    "filter.page" to equalTo("3"),
+                    "filter.page" to equalTo("2"),
                     "filter.page_size" to equalTo("2")
                 ))
                 .willReturn(jsonResponse(objectMapper.writeValueAsString(ProductListResult(
@@ -253,7 +253,7 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
                         objectMapper.writeValueAsString(
                             WorkStageListResponse(
                                 results = mainWorkStages.toTypedArray(),
-                                ok = true
+                                hasErrors = false
                             )
                         ), 200
                     )

@@ -53,9 +53,6 @@ class ProductTestIT: AbstractResourceTest() {
         val filteredProducts2 = it.integration.product.list(page = 2, pageSize = 2)
         assertEquals(2, filteredProducts2.size)
         assertArrayEquals(arrayOf("Test product 3", "Test product 4"), filteredProducts2.map(Product::name).toTypedArray())
-
-        val filteredProducts3 = it.integration.product.list(page = 0, pageSize = 0)
-        assertEquals(0, filteredProducts3.size)
     }
 
     @Test

@@ -38,7 +38,7 @@ class ProductsApiImpl: ProductsApi, AbstractApi() {
         }
 
         val lemonProducts = lemonProductsController.listProducts(
-            page ?: 0,
+            page ?: 1,
             pageSize ?: 10
         )
 

@@ -25,7 +25,7 @@ class LemonMachinesController {
         pageSize: Int
     ): Array<Machine> {
         return lemonClient.listMachines(
-            filterPage = page + 1,
+            filterPage = page,
             filterPageSize = pageSize,
         )
     }
