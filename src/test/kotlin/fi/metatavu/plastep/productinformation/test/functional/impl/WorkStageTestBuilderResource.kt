@@ -5,6 +5,7 @@ import fi.metatavu.plastep.productinformation.client.apis.WorkStagesApi
 import fi.metatavu.plastep.productinformation.client.infrastructure.ApiClient
 import fi.metatavu.plastep.productinformation.client.infrastructure.ClientException
 import fi.metatavu.plastep.productinformation.client.models.MainWorkStage
+import fi.metatavu.plastep.productinformation.client.models.WorkStagesListResponse
 import fi.metatavu.plastep.productinformation.test.functional.TestBuilder
 import fi.metatavu.plastep.productinformation.test.functional.settings.ApiTestSettings
 import org.junit.jupiter.api.fail
@@ -39,7 +40,7 @@ class WorkStageTestBuilderResource(
         updatedAfter: String,
         page: Int?,
         pageSize: Int?
-    ): Array<MainWorkStage> {
+    ): WorkStagesListResponse {
         return api.listWorkStages(
             updatedBefore = updatedBefore,
             updatedAfter = updatedAfter,

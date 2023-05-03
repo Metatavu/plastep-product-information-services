@@ -86,7 +86,9 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
                     jsonResponse(
                         objectMapper.writeValueAsString(
                             MachineListResult(
-                                results = machines.toTypedArray()
+                                results = machines.toTypedArray(),
+                                hasNextPage = false,
+                                hasErrors = false
                             )
                         ), 200
                     )
@@ -105,7 +107,9 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
                     jsonResponse(
                         objectMapper.writeValueAsString(
                             MachineListResult(
-                                results = machines.subList(1, 3).toTypedArray()
+                                results = machines.subList(1, 3).toTypedArray(),
+                                hasNextPage = true,
+                                hasErrors = false
                             )
                         ), 200
                     )
@@ -124,7 +128,9 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
                     jsonResponse(
                         objectMapper.writeValueAsString(
                             MachineListResult(
-                                results = machines.subList(2, 4).toTypedArray()
+                                results = machines.subList(2, 4).toTypedArray(),
+                                hasNextPage = false,
+                                hasErrors = false
                             )
                         ), 200
                     )
@@ -142,7 +148,9 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
                     jsonResponse(
                         objectMapper.writeValueAsString(
                             MachineListResult(
-                                results = arrayOf()
+                                results = arrayOf(),
+                                hasNextPage = false,
+                                hasErrors = false
                             )
                         ), 200
                     )
@@ -169,7 +177,9 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
             stubFor(
                 get(urlPathEqualTo("/api/products/${product.id}"))
                     .willReturn(jsonResponse(objectMapper.writeValueAsString(GetProductResult(
-                        result = product
+                        result = product,
+                        hasErrors = false,
+                        ok = true
                     )), 200))
             )
 
@@ -186,7 +196,9 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
                     "filter.page_size" to equalTo("10")
                 ))
                 .willReturn(jsonResponse(objectMapper.writeValueAsString(ProductListResult(
-                    results = products.toTypedArray()
+                    results = products.toTypedArray(),
+                    hasNextPage = false,
+                    hasErrors = false
                 )), 200))
         )
 
@@ -197,7 +209,9 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
                     "filter.page_size" to equalTo("2")
                 ))
                 .willReturn(jsonResponse(objectMapper.writeValueAsString(ProductListResult(
-                    results = products.subList(1, 3).toTypedArray()
+                    results = products.subList(1, 3).toTypedArray(),
+                    hasNextPage = true,
+                    hasErrors = false
                 )), 200))
         )
 
@@ -208,7 +222,9 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
                     "filter.page_size" to equalTo("2")
                 ))
                 .willReturn(jsonResponse(objectMapper.writeValueAsString(ProductListResult(
-                    results = products.subList(2, 4).toTypedArray()
+                    results = products.subList(2, 4).toTypedArray(),
+                    hasNextPage = false,
+                    hasErrors = false
                 )), 200))
         )
 
@@ -218,7 +234,9 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
                     "filter.page_size" to equalTo("0")
                 ))
                 .willReturn(jsonResponse(objectMapper.writeValueAsString(ProductListResult(
-                    results = arrayOf()
+                    results = arrayOf(),
+                    hasNextPage = false,
+                    hasErrors = false
                 )), 200))
         )
     }
@@ -253,7 +271,8 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
                         objectMapper.writeValueAsString(
                             WorkStageListResponse(
                                 results = mainWorkStages.toTypedArray(),
-                                hasErrors = false
+                                hasErrors = false,
+                                hasNextPage = false
                             )
                         ), 200
                     )
@@ -268,7 +287,8 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
                             objectMapper.writeValueAsString(
                                 MainWorkStageResponse(
                                     result = mainWorkStage,
-                                    ok = true
+                                    ok = true,
+                                    hasErrors = false
                                 )
                             ), 200
                         )

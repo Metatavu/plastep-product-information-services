@@ -19,11 +19,14 @@ class WorkStagesApiImpl: WorkStagesApi, AbstractApi() {
     lateinit var lemonWorkStagesController: LemonWorkStagesController
 
     @Inject
-    lateinit var lemonWorkStagesTranslator: LemonWorkStagesTranslator
+    lateinit var lemonWorkStageFindTranslator: LemonWorkStageFindTranslator
+
+    @Inject
+    lateinit var lemonWorkStageListTranslator: LemonWorkStageListTranslator
 
     override fun findWorkStage(workStageId: Long): Response {
-        val workStage = lemonWorkStagesController.findWorkStage(workStageId) ?: return createNotFoundWithMessage(WORK_STAGE, workStageId.toInt())
-        return createOk(lemonWorkStagesTranslator.translate(workStage))
+        val workStage = lemonWorkStagesController.findWorkStage(workStageId)
+        return createOk(lemonWorkStageFindTranslator.translate(workStage))
     }
 
     override fun listWorkStages(
@@ -50,6 +53,6 @@ class WorkStagesApiImpl: WorkStagesApi, AbstractApi() {
                 pageSize = pageSize ?: 100,
         )
 
-        return createOk(workStages.map(lemonWorkStagesTranslator::translate))
+        return createOk(lemonWorkStageListTranslator.translate(workStages))
     }
 }

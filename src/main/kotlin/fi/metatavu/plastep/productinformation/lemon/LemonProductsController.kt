@@ -1,7 +1,6 @@
 package fi.metatavu.plastep.productinformation.lemon
 
-import fi.metatavu.plastep.lemon.client.models.GetProductStructureResultResult
-import fi.metatavu.plastep.lemon.client.models.Product
+import fi.metatavu.plastep.lemon.client.models.*
 import org.slf4j.Logger
 import javax.enterprise.context.ApplicationScoped
 import javax.inject.Inject
@@ -15,18 +14,15 @@ class LemonProductsController {
     @Inject
     lateinit var lemonClient: LemonClient
 
-    @Inject
-    lateinit var logger: Logger
-
     /**
      * Find product from Lemonsoft
      *
      * @param productId product id
-     * @return productId product or null if not found
+     * @return product find response
      */
     fun findProduct(
         productId: Int
-    ): Product? {
+    ): GetProductResult {
         return lemonClient.findProduct(
             productId = productId
         )
@@ -37,12 +33,12 @@ class LemonProductsController {
      *
      * @param page page number. Page number starts from 1
      * @param pageSize page size.
-     * @return list of products
+     * @return list of products response
      */
     fun listProducts(
         page: Int,
         pageSize: Int
-    ): Array<Product> {
+    ): ProductListResult {
         return lemonClient.listProducts(
             filterPage = page,
             filterPageSize = pageSize,
@@ -53,9 +49,9 @@ class LemonProductsController {
      * Returns product's product structure from Lemonsoft REST API. Result contains only single level
      *
      * @param productCode product code
-     * @return product structure or null if not found
+     * @return product structure response
      */
-    fun getDefaultProductStructure(productCode: String): GetProductStructureResultResult? {
+    fun getDefaultProductStructure(productCode: String): GetProductStructureResult {
         return lemonClient.getProductStructure(
             productCode = productCode,
             workNumber = 0,

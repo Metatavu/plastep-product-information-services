@@ -18,22 +18,22 @@ class MachineTestIT : AbstractResourceTest() {
     @Test
     fun list() {
         createTestBuilder().use { it ->
-            val machines = it.integration.machine.list(page = null, pageSize = null)
+            val machines = it.integration.machine.list(page = null, pageSize = null).machines!!
             assertEquals(4, machines.size)
 
             assertEquals(1, machines[0].id)
             assertEquals("machine code 1", machines[0].code)
             assertEquals("machine description", machines[0].description)
 
-            val machinesPage1 = it.integration.machine.list(page = 1, pageSize = 2)
+            val machinesPage1 = it.integration.machine.list(page = 1, pageSize = 2).machines!!
             assertEquals(2, machinesPage1.size)
             assertEquals(2, machinesPage1.sortedBy { it.id }[0].id)
 
-            val machinesPage2 = it.integration.machine.list(page = 2, pageSize = 2)
+            val machinesPage2 = it.integration.machine.list(page = 2, pageSize = 2).machines!!
             assertEquals(2, machinesPage2.size)
             assertEquals(3, machinesPage2.sortedBy { it.id }[0].id)
 
-            val machinesEmpty = it.integration.machine.list(page = 2, pageSize = 0)
+            val machinesEmpty = it.integration.machine.list(page = 2, pageSize = 0).machines!!
             assertEquals(0, machinesEmpty.size)
 
             // access rights

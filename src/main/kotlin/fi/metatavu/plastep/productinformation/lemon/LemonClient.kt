@@ -51,10 +51,15 @@ class LemonClient {
      * Returns single product from Lemonsoft REST API
      *
      * @param productId product id
-     * @return product or null if not found
+     * @return product search result lemon object
      */
-    fun findProduct(productId: Int): Product? {
-        return getProductsApi().getProduct(id = productId).result
+    fun findProduct(productId: Int): GetProductResult {
+        val product = getProductsApi().getProduct(id = productId)
+        if (product.hasErrors) {
+            logger.error("Failed to get product from Lemonsoft")
+        }
+
+        return product
     }
 
     /**
@@ -77,7 +82,7 @@ class LemonClient {
      * @param filterPage Page number. If not provided, using default value of 1 (optional)
      * @param filterPageSize Page size. If not provided, using default value of 10 (optional)
      * @param filterSearch filter by search
-     * @return list of products
+     * @return lemon product list object
      */
     fun listProducts(
         filterName: String? = null,
@@ -97,8 +102,8 @@ class LemonClient {
         filterPage: Int? = null,
         filterPageSize: Int? = null,
         filterSearch: String? = null
-    ): Array<Product> {
-        return getProductsApi().listProducts(
+    ): ProductListResult {
+        val response = getProductsApi().listProducts(
             filterName = filterName,
             filterSku = filterSku,
             filterWithImages = filterWithImages,
@@ -116,7 +121,13 @@ class LemonClient {
             filterPage = filterPage,
             filterPageSize = filterPageSize,
             filterSearch = filterSearch
-        ).results
+        )
+
+        if (response.hasErrors) {
+            logger.error("Failed to list products")
+        }
+
+        return response
     }
 
     /**
@@ -125,14 +136,19 @@ class LemonClient {
      * @param productCode product code
      * @param workNumber Work number. Use 0 for default structure
      * @param level Structure level to be fetched
-     * @return product structure or null if not found
+     * @return product structure response lemon object
      */
-    fun getProductStructure(productCode: String, workNumber: Int, level: Int): GetProductStructureResultResult? {
-        return getProductsApi().getProductStructure(
+    fun getProductStructure(productCode: String, workNumber: Int, level: Int): GetProductStructureResult {
+        val response = getProductsApi().getProductStructure(
             productCode = productCode,
             workNumber = workNumber,
             level = level
-        ).result
+        )
+        if (response.ok != true){
+            logger.error("Failed to get product structure from Lemonsoft")
+        }
+
+        return response
     }
 
     /**
@@ -144,7 +160,8 @@ class LemonClient {
      * @param filterObjectIds filter by object ids
      * @param filterPage Page number.
      * @param filterPageSize Page size.
-     *  @param filterSearch filter by search
+     * @param filterSearch filter by search
+     * @return lemon machine list response
      */
     fun listMachines(
         filterCode: String? = null,
@@ -154,8 +171,8 @@ class LemonClient {
         filterPage: Int? = null,
         filterPageSize: Int? = null,
         filterSearch: String? = null
-    ): Array<Machine> {
-        return getMachinesApi().listMachines(
+    ): MachineListResult {
+        val response = getMachinesApi().listMachines(
             filterCode = filterCode,
             filterType = filterType,
             filterIsDisabled = filterIsDisabled,
@@ -163,23 +180,23 @@ class LemonClient {
             filterPage = filterPage,
             filterPageSize = filterPageSize,
             filterSearch = filterSearch
-        ).results
+        )
+
+        if (response.hasErrors) {
+            logger.error("Failed to list machines")
+        }
+
+        return response
     }
 
     /**
      * Returns single main work stage from Lemonsoft REST API
      *
      * @param workStageId work stage id
-     * @return Work stage or null if not found
+     * @return lemon work starge find response
      */
-    fun findWorkStage(workStageId: Long): MainWorkStage? {
-        val response = getWorkStagesApi().findWorkStage(id = workStageId)
-
-        return if (response.ok) {
-            response.result
-        } else {
-            null
-        }
+    fun findWorkStage(workStageId: Long): MainWorkStageResponse {
+        return getWorkStagesApi().findWorkStage(id = workStageId)
     }
 
     /**
@@ -190,7 +207,7 @@ class LemonClient {
      * @param filterPage Page number. If not provided, using default value of 1 (optional)
      * @param filterPageSize Page size. If not provided, using default value of 10 (optional)
      * @param filterState filter by state
-     * @return list of work stages
+     * @return work stage list response
      */
     fun listWorkStages(
         filterUpdatedAfter: LocalDate,
@@ -198,7 +215,7 @@ class LemonClient {
         filterPage: Int,
         filterPageSize: Int,
         filterState: Int? = null
-    ): Array<WorkStageListItem> {
+    ): WorkStageListResponse {
         val response = getWorkStagesApi().listWorkStages(
             filterUpdatedAfter = filterUpdatedAfter.toString(),
             filterUpdatedBefore = filterUpdatedBefore.toString(),
@@ -207,12 +224,11 @@ class LemonClient {
             filterState = filterState
         )
 
-        return if (!response.hasErrors) {
-            response.results
-        } else {
+        if (response.hasErrors) {
             logger.error("Failed to list work stages")
-            emptyArray()
         }
+
+        return response
     }
 
     /**

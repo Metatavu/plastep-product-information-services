@@ -14,7 +14,7 @@ class MachinesApiImpl : MachinesApi, AbstractApi() {
     lateinit var lemonMachinesController: LemonMachinesController
 
     @Inject
-    lateinit var lemonMachineTranslator: LemonMachineTranslator
+    lateinit var lemonMachineListTranslator: LemonMachineListTranslator
 
     override fun listMachines(page: Int?, pageSize: Int?): Response {
         if (!hasIntegrationRole()) {
@@ -26,6 +26,6 @@ class MachinesApiImpl : MachinesApi, AbstractApi() {
             pageSize ?: 50
         )
 
-        return createOk(lemonMachines.map { lemonMachineTranslator.translate(it) })
+        return createOk(lemonMachineListTranslator.translate(lemonMachines))
     }
 }

@@ -5,6 +5,8 @@ import fi.metatavu.plastep.productinformation.client.apis.ProductsApi
 import fi.metatavu.plastep.productinformation.client.infrastructure.ApiClient
 import fi.metatavu.plastep.productinformation.client.infrastructure.ClientException
 import fi.metatavu.plastep.productinformation.client.models.Product
+import fi.metatavu.plastep.productinformation.client.models.ProductFindResponse
+import fi.metatavu.plastep.productinformation.client.models.ProductsListResponse
 import fi.metatavu.plastep.productinformation.test.functional.TestBuilder
 import fi.metatavu.plastep.productinformation.test.functional.settings.ApiTestSettings
 import org.junit.jupiter.api.fail
@@ -31,7 +33,7 @@ class ProductTestBuilderResource(
      * @param id id
      * @return found product
      */
-    fun find(id: Int): Product {
+    fun find(id: Int): ProductFindResponse {
         return api.findProduct(id = id)
     }
 
@@ -40,8 +42,9 @@ class ProductTestBuilderResource(
      *
      * @param page page number. Page number starts from 0
      * @param pageSize page size. Defaults to 10
+     * @return product list response
      */
-    fun list(page: Int?, pageSize: Int?): Array<Product> {
+    fun list(page: Int?, pageSize: Int?): ProductsListResponse {
         return api.listProducts(
             page = page,
             pageSize = pageSize

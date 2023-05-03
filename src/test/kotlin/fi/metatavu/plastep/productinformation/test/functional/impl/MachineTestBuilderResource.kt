@@ -4,6 +4,7 @@ import fi.metatavu.jaxrs.test.functional.builder.auth.AccessTokenProvider
 import fi.metatavu.plastep.productinformation.client.apis.MachinesApi
 import fi.metatavu.plastep.productinformation.client.infrastructure.ApiClient
 import fi.metatavu.plastep.productinformation.client.infrastructure.ClientException
+import fi.metatavu.plastep.productinformation.client.models.MachinesListResponse
 import fi.metatavu.plastep.productinformation.model.Machine
 import fi.metatavu.plastep.productinformation.test.functional.TestBuilder
 import fi.metatavu.plastep.productinformation.test.functional.settings.ApiTestSettings
@@ -32,7 +33,7 @@ class MachineTestBuilderResource(
      * @param page page number. Page number starts from 0
      * @param pageSize page size. Defaults to 10
      */
-    fun list(page: Int?, pageSize: Int?): Array<fi.metatavu.plastep.productinformation.client.models.Machine> {
+    fun list(page: Int?, pageSize: Int?): MachinesListResponse {
         return api.listMachines(
             page = page,
             pageSize = pageSize

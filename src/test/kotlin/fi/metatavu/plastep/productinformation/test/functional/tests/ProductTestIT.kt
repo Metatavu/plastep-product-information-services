@@ -20,11 +20,13 @@ class ProductTestIT: AbstractResourceTest() {
     @Test
     fun testFindProduct() = createTestBuilder().use {
         val product = it.integration.product.find(id = 12345)
-        assertEquals(12345, product.id)
-        assertEquals("000123", product.productCode)
-        assertEquals("Test product 1", product.name)
-        assertArrayEquals(arrayOf("000223", "000323"), product.childProductCodes)
-        assertArrayEquals(arrayOf(12346L, 12347L), product.childProductIds)
+        assertEquals(false, product.hasErrors)
+        assertEquals(true, product.ok)
+        assertEquals(12345, product.product!!.id)
+        assertEquals("000123", product.product.productCode)
+        assertEquals("Test product 1", product.product.name)
+        assertArrayEquals(arrayOf("000223", "000323"), product.product.childProductCodes)
+        assertArrayEquals(arrayOf(12346L, 12347L), product.product.childProductIds)
     }
 
     @Test
@@ -36,7 +38,7 @@ class ProductTestIT: AbstractResourceTest() {
 
     @Test
     fun testListProducts() = createTestBuilder().use {
-        val allProducts = it.integration.product.list(page = null, pageSize = null)
+        val allProducts = it.integration.product.list(page = null, pageSize = null).products!!
         assertEquals(4, allProducts.size)
 
         assertEquals(12345, allProducts[0].id)
@@ -47,10 +49,12 @@ class ProductTestIT: AbstractResourceTest() {
         assertArrayEquals(arrayOf("Test product 1", "Test product 2", "Test product 3", "Test product 4"), allProducts.map(Product::name).toTypedArray())
 
         val filteredProducts1 = it.integration.product.list(page = 1, pageSize = 2)
-        assertEquals(2, filteredProducts1.size)
-        assertArrayEquals(arrayOf("Test product 2", "Test product 3"), filteredProducts1.map(Product::name).toTypedArray())
+        assertEquals(true, filteredProducts1.hasNextPage)
+        assertEquals(false, filteredProducts1.hasErrors)
+        assertEquals(2, filteredProducts1.products!!.size)
+        assertArrayEquals(arrayOf("Test product 2", "Test product 3"), filteredProducts1.products.map(Product::name).toTypedArray())
 
-        val filteredProducts2 = it.integration.product.list(page = 2, pageSize = 2)
+        val filteredProducts2 = it.integration.product.list(page = 2, pageSize = 2).products!!
         assertEquals(2, filteredProducts2.size)
         assertArrayEquals(arrayOf("Test product 3", "Test product 4"), filteredProducts2.map(Product::name).toTypedArray())
     }
