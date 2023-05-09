@@ -1,6 +1,6 @@
 package fi.metatavu.plastep.productinformation.lemon
 
-import fi.metatavu.plastep.lemon.client.models.Machine
+import fi.metatavu.plastep.lemon.client.models.MachineListResult
 import javax.enterprise.context.ApplicationScoped
 import javax.inject.Inject
 
@@ -18,12 +18,12 @@ class LemonMachinesController {
      *
      * @param page page number.
      * @param pageSize page size.
-     * @return list of machines
+     * @return lemon machine list response
      */
     fun listMachines(
         page: Int,
         pageSize: Int
-    ): Array<Machine> {
+    ): MachineListResult {
         return lemonClient.listMachines(
             filterPage = page,
             filterPageSize = pageSize,

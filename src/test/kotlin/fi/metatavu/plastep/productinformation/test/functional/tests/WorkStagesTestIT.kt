@@ -24,7 +24,7 @@ class WorkStagesTestIT: AbstractResourceTest() {
             updatedAfter = "1971-01-01",
             page = 1,
             pageSize = 50
-        )
+        ).workStages!!
 
         assertEquals(3, allWorkStages.size)
 

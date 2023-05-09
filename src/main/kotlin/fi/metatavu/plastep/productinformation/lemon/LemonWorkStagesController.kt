@@ -1,6 +1,8 @@
 package fi.metatavu.plastep.productinformation.lemon
 
 import fi.metatavu.plastep.lemon.client.models.MainWorkStage
+import fi.metatavu.plastep.lemon.client.models.MainWorkStageResponse
+import fi.metatavu.plastep.lemon.client.models.WorkStageListResponse
 import org.slf4j.Logger
 import java.time.LocalDate
 import javax.enterprise.context.ApplicationScoped
@@ -22,9 +24,9 @@ class LemonWorkStagesController {
      * Find workStage from Lemonsoft
      *
      * @param workStageId workStage id
-     * @return workStageId workStage or null if not found
+     * @return workStage response
      */
-    fun findWorkStage(workStageId: Long): MainWorkStage? {
+    fun findWorkStage(workStageId: Long): MainWorkStageResponse {
         return lemonClient.findWorkStage(workStageId = workStageId)
     }
 
@@ -35,29 +37,32 @@ class LemonWorkStagesController {
      * @param updatedBefore updated before
      * @param page page number. Page number starts from 0
      * @param pageSize page size.
-     * @return list of workStages
+     * @return response and list of workStages with filled info
      */
     fun listWorkStages(
         updatedAfter: LocalDate,
         updatedBefore: LocalDate,
         page: Int,
         pageSize: Int
-    ): List<MainWorkStage> {
-        val mainWorkStageIds = lemonClient.listWorkStages(
+    ): Pair<WorkStageListResponse, List<MainWorkStage>> {
+        val mainWorkStageResponse = lemonClient.listWorkStages(
             filterUpdatedAfter = updatedAfter,
             filterUpdatedBefore = updatedBefore,
             filterPage = page,
-            filterPageSize = pageSize,
-        ).map { it.id }
+            filterPageSize = pageSize
+        )
 
-        return mainWorkStageIds.mapNotNull {
+        val mainWorkStageIds = mainWorkStageResponse.results.map { it.id }
+
+        val withFilledData = mainWorkStageIds.map {
             val foundWorkStage = findWorkStage(it)
-            if (foundWorkStage == null) {
+            if (foundWorkStage.hasErrors || !foundWorkStage.ok) {
                 logger.error("Failed to find workStage with id {}", it)
             }
 
-            foundWorkStage
+            foundWorkStage.result
         }
+        return mainWorkStageResponse to withFilledData
     }
 
 }

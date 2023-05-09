@@ -18,7 +18,10 @@ class ProductsApiImpl: ProductsApi, AbstractApi() {
     lateinit var lemonProductsController: LemonProductsController
 
     @Inject
-    lateinit var lemonProductTranslator: LemonProductTranslator
+    lateinit var lemonProductListTranslator: LemonProductListTranslator
+
+    @Inject
+    lateinit var lemonProductFindTranslator: LemonProductFindTranslator
 
     @Inject
     lateinit var logger: Logger
@@ -28,8 +31,8 @@ class ProductsApiImpl: ProductsApi, AbstractApi() {
             return createForbidden("Only integration users can access this resource")
         }
 
-        val lemonProduct = lemonProductsController.findProduct(id) ?: return createNotFoundWithMessage(PRODUCT, id)
-        return createOk(lemonProductTranslator.translate(lemonProduct))
+        val lemonProduct = lemonProductsController.findProduct(id)
+        return createOk(lemonProductFindTranslator.translate(lemonProduct))
     }
 
     override fun listProducts(page: Int?, pageSize: Int?): Response {
@@ -42,7 +45,7 @@ class ProductsApiImpl: ProductsApi, AbstractApi() {
             pageSize ?: 10
         )
 
-        return createOk(lemonProducts.map { lemonProductTranslator.translate(it) })
+        return createOk(lemonProductListTranslator.translate(lemonProducts))
     }
 
 }

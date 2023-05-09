@@ -382,17 +382,31 @@ components:
       type: object
       required:
         - results
+        - has_next_page
+        - has_errors
       properties:
         results:
           type: array
           items:
             $ref: "#/components/schemas/Product"
+        has_next_page:
+          type: boolean
+        has_errors:
+          type: boolean
 
     GetProductResult:
       type: object
+      required:
+        - result
+        - ok
+        - has_errors
       properties:
         result:
           $ref: "#/components/schemas/Product"
+        ok:
+          type: boolean
+        has_errors:
+          type: boolean
 
     Product:
       type: object
@@ -480,11 +494,17 @@ components:
       type: object
       required:
         - results
+        - has_next_page
+        - has_errors
       properties:
         results:
           type: array
           items:
             $ref: "#/components/schemas/Machine"
+        has_next_page:
+          type: boolean
+        has_errors:
+          type: boolean
 
     WorkStageListResponse:
       description: "Work stage list response"
@@ -492,6 +512,7 @@ components:
       required:
         - has_errors
         - results
+        - has_next_page
       properties:
         has_errors:
           type: boolean
@@ -499,6 +520,8 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/WorkStageListItem"
+        has_next_page:
+          type: boolean
 
     WorkStageListItem:
       type: object
@@ -522,11 +545,14 @@ components:
       required:
         - ok
         - result
+        - has_errors
       properties:
         ok:
           type: boolean
         result:
           $ref: "#/components/schemas/MainWorkStage"
+        has_errors:
+          type: boolean
 
     MainWorkStage:
       type: object
