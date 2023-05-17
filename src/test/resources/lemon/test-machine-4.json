@@ -1,0 +1,22 @@
+{
+  "id": 4,
+  "group_id": 0,
+  "code":  "machine code 4",
+  "description": "machine description 4",
+  "hour_price": 0.0000,
+  "capacity": 0.0,
+  "capacity_unit": "",
+  "costcenter": "",
+  "father_code": "",
+  "level": 1,
+  "order": 2,
+  "is_low_level": false,
+  "load_type": 2,
+  "type": 0,
+  "load_factor": 0,
+  "is_calculation_required": true,
+  "stock": 0,
+  "dimension_code": "",
+  "is_overload_capacity": false,
+  "is_disabled": false
+}

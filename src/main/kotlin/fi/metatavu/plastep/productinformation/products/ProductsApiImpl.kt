@@ -1,0 +1,51 @@
+package fi.metatavu.plastep.productinformation.products
+
+import fi.metatavu.plastep.productinformation.rest.AbstractApi
+import fi.metatavu.plastep.productinformation.lemon.LemonProductsController
+import fi.metatavu.plastep.productinformation.spec.ProductsApi
+import org.slf4j.Logger
+import javax.enterprise.context.RequestScoped
+import javax.inject.Inject
+import javax.ws.rs.Consumes
+import javax.ws.rs.core.Response
+
+@RequestScoped
+@Suppress ("UNUSED")
+@Consumes ("application/json")
+class ProductsApiImpl: ProductsApi, AbstractApi() {
+
+    @Inject
+    lateinit var lemonProductsController: LemonProductsController
+
+    @Inject
+    lateinit var lemonProductListTranslator: LemonProductListTranslator
+
+    @Inject
+    lateinit var lemonProductFindTranslator: LemonProductFindTranslator
+
+    @Inject
+    lateinit var logger: Logger
+
+    override fun findProduct(id: Int): Response {
+        if (!hasIntegrationRole()) {
+            return createForbidden("Only integration users can access this resource")
+        }
+
+        val lemonProduct = lemonProductsController.findProduct(id)
+        return createOk(lemonProductFindTranslator.translate(lemonProduct))
+    }
+
+    override fun listProducts(page: Int?, pageSize: Int?): Response {
+        if (!hasIntegrationRole()) {
+            return createForbidden("Only integration users can access this resource")
+        }
+
+        val lemonProducts = lemonProductsController.listProducts(
+            page ?: 1,
+            pageSize ?: 10
+        )
+
+        return createOk(lemonProductListTranslator.translate(lemonProducts))
+    }
+
+}

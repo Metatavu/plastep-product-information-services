@@ -1,0 +1,628 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: Lemonsoft ERP API-spec (partial)
+
+paths:
+  /api/auth/login:
+    post:
+      operationId: login
+      summary: Perform a login to the API
+      tags:
+        - Authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginPayload"
+        required: true
+      responses:
+        "200":
+          description: Login result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResult"
+
+  /api/products:
+    get:
+      tags:
+        - Product
+      summary: Get a list of products
+      operationId: listProducts
+      parameters:
+        - name: filter.name
+          in: query
+          schema:
+            type: string
+        - name: filter.sku
+          in: query
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: filter.with_images
+          in: query
+          schema:
+            type: boolean
+        - name: filter.modified_before
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: filter.modified_after
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: filter.attribute_id
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: filter.extra_name
+          in: query
+          schema:
+            type: string
+        - name: filter.category_id
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: filter.group_code
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: filter.show_models
+          in: query
+          schema:
+            type: boolean
+        - name: filter.show_nonactive
+          in: query
+          schema:
+            type: boolean
+        - name: filter.shelf
+          in: query
+          schema:
+            type: string
+        - name: filter.shelf_stock
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: filter.object_ids
+          in: query
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int32
+        - name: filter.page
+          in: query
+          description: Page number. If not provided, using default value of 1
+          schema:
+            type: integer
+            format: int32
+        - name: filter.page_size
+          in: query
+          description: Page size. If not provided, using default value of 10
+          schema:
+            type: integer
+            format: int32
+        - name: filter.search
+          in: query
+          schema:
+            type: string
+      security:
+        - SessionIdAuth: []
+      responses:
+        "200":
+          description: Product list results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductListResult"
+
+  /api/products/{id}:
+    get:
+      tags:
+        - Product
+      summary: Get product
+      operationId: getProduct
+      parameters:
+        - name: id
+          in: path
+          description: product id
+          required: true
+          schema:
+            type: integer
+            format: int32
+      security:
+        - SessionIdAuth: []
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetProductResult"
+
+  /api/products/{product_code}/{work_number}/{level}:
+    get:
+      tags:
+        - Product
+      summary: Get complete product structure
+      operationId: getProductStructure
+      parameters:
+        - name: product_code
+          in: path
+          description: Product code
+          required: true
+          schema:
+            type: string
+        - name: work_number
+          in: path
+          description: Work number. Use 0 for default structure
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: level
+          in: path
+          description: Structure level to be fetched
+          required: true
+          schema:
+            type: integer
+            format: int32
+      security:
+        - SessionIdAuth: []
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetProductStructureResult"
+
+  /api/production/machines:
+    get:
+      tags:
+        - Machine
+      summary: Get a list of machines
+      operationId: listMachines
+      parameters:
+        - name: filter.code
+          in: query
+          schema:
+            type: string
+        - name: filter.type
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: filter.is_disabled
+          in: query
+          schema:
+            type: boolean
+        - name: filter.object_ids
+          in: query
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int32
+        - name: filter.page
+          in: query
+          description: Page number. If not provided, using default value of 1
+          schema:
+            type: integer
+            format: int32
+        - name: filter.page_size
+          in: query
+          description: Page size. If not provided, using default value of 10
+          schema:
+            type: integer
+            format: int32
+        - name: filter.search
+          in: query
+          schema:
+            type: string
+      security:
+        - SessionIdAuth: []
+      responses:
+        "200":
+          description: Machine list results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MachineListResult"
+
+  /api/production/main_ws/{id}:
+    get:
+      tags:
+        - WorkStages
+      summary: Find main work stage with given id
+      operationId: findWorkStage
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      security:
+        - SessionIdAuth: []
+      responses:
+        "200":
+          description: Found main work stage
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MainWorkStageResponse"
+        "default":
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /api/production/main_ws/changed:
+    get:
+      tags:
+        - WorkStages
+      summary: Get a list of work stages
+      operationId: listWorkStages
+      parameters:
+        - name: filter.updated_after
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+        - name: filter.updated_before
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+        - name: filter.state
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: filter.page
+          in: query
+          required: true
+          description: Page number. If not provided, using default value of 1
+          schema:
+            type: integer
+            format: int32
+        - name: filter.page_size
+          in: query
+          required: true
+          description: Page size. If not provided, using default value of 10
+          schema:
+            type: integer
+            format: int32
+      security:
+        - SessionIdAuth: []
+      responses:
+        "200":
+          description: Work stages list results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkStageListResponse"
+
+components:
+  securitySchemes:
+    SessionIdAuth:
+      type: apiKey
+      in: header
+      name: Session-Id
+
+  schemas:
+    Error:
+      type: object
+      description: Error object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          readOnly: true
+          type: integer
+          format: int32
+        message:
+          readOnly: true
+          type: string
+
+    LoginPayload:
+      required:
+        - UserName
+        - Password
+        - Database
+        - ApiKey
+      type: object
+      properties:
+        UserName:
+          type: string
+        Password:
+          type: string
+        Database:
+          type: string
+        ApiKey:
+          type: string
+    LoginResult:
+      type: object
+      required:
+        - session_id
+      properties:
+        message:
+          type: string
+          readOnly: true
+        code:
+          type: integer
+          readOnly: true
+        session_id:
+          type: string
+          readOnly: true
+        version:
+          type: string
+          readOnly: true
+
+    ProductListResult:
+      type: object
+      required:
+        - results
+        - has_next_page
+        - has_errors
+      properties:
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/Product"
+        has_next_page:
+          type: boolean
+        has_errors:
+          type: boolean
+
+    GetProductResult:
+      type: object
+      required:
+        - result
+        - ok
+        - has_errors
+      properties:
+        result:
+          $ref: "#/components/schemas/Product"
+        ok:
+          type: boolean
+        has_errors:
+          type: boolean
+
+    Product:
+      type: object
+      required:
+        - id
+        - sku
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        sku:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+
+    GetProductStructureResult:
+      type: object
+      properties:
+        ok:
+          type: boolean
+        result:
+          $ref: "#/components/schemas/GetProductStructureResultResult"
+
+    GetProductStructureResultResult:
+      type: object
+      properties:
+        parent:
+          $ref: "#/components/schemas/ProductStructureParent"
+        nodes:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductStructureNode"
+
+    ProductStructureParent:
+      type: object
+      properties:
+        product_id:
+          type: number
+        product_code:
+          type: string
+
+    ProductStructureNode:
+      type: object
+      properties:
+        node:
+          $ref: "#/components/schemas/ProductStructureNodeItem"
+        children:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductStructureNode"
+
+    ProductStructureNodeItem:
+      type: object
+      properties:
+        father_id:
+          type: integer
+          format: int64
+        product_id:
+          type: integer
+          format: int64
+        product_code:
+          type: string
+        father_code:
+          type: string
+        structure_id:
+          type: integer
+          format: int64
+
+    Machine:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        code:
+          type: string
+        description:
+          type: string
+
+    MachineListResult:
+      type: object
+      required:
+        - results
+        - has_next_page
+        - has_errors
+      properties:
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/Machine"
+        has_next_page:
+          type: boolean
+        has_errors:
+          type: boolean
+
+    WorkStageListResponse:
+      description: "Work stage list response"
+      type: object
+      required:
+        - has_errors
+        - results
+        - has_next_page
+      properties:
+        has_errors:
+          type: boolean
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/WorkStageListItem"
+        has_next_page:
+          type: boolean
+
+    WorkStageListItem:
+      type: object
+      description: "Work stage list item"
+      required:
+        - id
+        - state
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: "Work stage id"
+        state:
+          type: integer
+          format: int32
+          description: "Work stage state"
+          
+    MainWorkStageResponse:
+      type: object
+      description: "Main work stage response"
+      required:
+        - ok
+        - result
+        - has_errors
+      properties:
+        ok:
+          type: boolean
+        result:
+          $ref: "#/components/schemas/MainWorkStage"
+        has_errors:
+          type: boolean
+
+    MainWorkStage:
+      type: object
+      description: "Main work stage object"
+      required:
+        - id
+        - state
+        - product_code
+        - worknumber
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: "Main work stage id"
+        state:
+          type: integer
+          format: int32
+          description: "Main work stage state"
+        product_code:
+          type: string
+          description: "Product code"
+        comment:
+          type: string
+          description: "Comment of main work stage"
+        worknumber:
+          type: integer
+          format: int64
+          description: "Work number of main work stage"
+        sub_workstages:
+          type: array
+          items:
+            $ref: "#/components/schemas/SubWorkStage"
+
+    SubWorkStage:
+      type: object
+      description: "Sub work stage object"
+      required:
+        - id
+        - workphase_id
+        - state
+        - machine_id
+        - machine_code
+        - description
+        - product_code
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: "Sub work stage id"
+        workphase_id:
+          type: integer
+          format: int32
+          description: "Sub work stage phase id"
+        state:
+          type: integer
+          format: int32
+          description: "Sub work stage state"
+        machine_id:
+          type: integer
+          format: int64
+          description: "Machine id"
+        machine_code:
+          type: string
+          description: "Machine code"
+        description:
+          type: string
+          description: "Description of sub work stage"
+        description2:
+          type: string
+          description: "Description2 of sub work stage"
+        product_code:
+          type: string
+          description: "Product code"
