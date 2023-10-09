@@ -393,6 +393,10 @@ components:
           type: boolean
         has_errors:
           type: boolean
+        errors:
+          type: array
+          items:
+            $ref: "#/components/schemas/Error"
 
     GetProductResult:
       type: object
@@ -407,6 +411,10 @@ components:
           type: boolean
         has_errors:
           type: boolean
+        errors:
+          type: array
+          items:
+            $ref: "#/components/schemas/Error"
 
     Product:
       type: object
@@ -433,6 +441,12 @@ components:
           type: boolean
         result:
           $ref: "#/components/schemas/GetProductStructureResultResult"
+        has_errors:
+          type: boolean
+        errors:
+          type: array
+          items:
+            $ref: "#/components/schemas/Error"
 
     GetProductStructureResultResult:
       type: object
@@ -505,6 +519,10 @@ components:
           type: boolean
         has_errors:
           type: boolean
+        errors:
+          type: array
+          items:
+            $ref: "#/components/schemas/Error"
 
     WorkStageListResponse:
       description: "Work stage list response"
@@ -522,6 +540,10 @@ components:
             $ref: "#/components/schemas/WorkStageListItem"
         has_next_page:
           type: boolean
+        errors:
+          type: array
+          items:
+            $ref: "#/components/schemas/Error"
 
     WorkStageListItem:
       type: object
@@ -553,6 +575,10 @@ components:
           $ref: "#/components/schemas/MainWorkStage"
         has_errors:
           type: boolean
+        errors:
+          type: array
+          items:
+            $ref: "#/components/schemas/Error"
 
     MainWorkStage:
       type: object
