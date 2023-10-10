@@ -55,7 +55,7 @@ class LemonClient {
      */
     fun findProduct(productId: Int): GetProductResult {
         val product = getProductsApi().getProduct(id = productId)
-        if (!product.ok || product.hasErrors || !product.errors.isNullOrEmpty()) {
+        if (product.hasErrors || !product.errors.isNullOrEmpty()) {
             logger.error("Failed to get product ${getErrorsString(product.errors)}")
         }
 
@@ -145,7 +145,7 @@ class LemonClient {
             level = level
         )
 
-        if (response.ok != true || response.hasErrors == true || !response.errors.isNullOrEmpty()) {
+        if (response.hasErrors == true || !response.errors.isNullOrEmpty()) {
             logger.error("Failed to get product structure ${getErrorsString(response.errors)}")
         }
 
