@@ -17,10 +17,8 @@ class LemonProductFindTranslator :
     lateinit var lemonProductTranslator: LemonProductTranslator
 
     override fun translate(entity: GetProductResult): ProductFindResponse {
-        val product = lemonProductTranslator.translate(entity.result)
-
         return ProductFindResponse(
-            product = product,
+            product = entity.result?.let(lemonProductTranslator::translate),
             hasErrors = entity.hasErrors,
             ok = entity.ok
         )

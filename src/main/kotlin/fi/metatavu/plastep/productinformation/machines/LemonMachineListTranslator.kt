@@ -17,7 +17,7 @@ class LemonMachineListTranslator : AbstractTranslator<MachineListResult, Machine
 
     override fun translate(entity: MachineListResult): MachinesListResponse {
         return MachinesListResponse(
-            machines = entity.results.map(lemonMachineTranslator::translate),
+            machines = entity.results?.map(lemonMachineTranslator::translate),
             hasErrors = entity.hasErrors,
             hasNextPage = entity.hasNextPage
         )

@@ -17,7 +17,7 @@ class LemonWorkStageFindTranslator: AbstractTranslator<MainWorkStageResponse, Wo
 
     override fun translate(entity: MainWorkStageResponse): WorkStageFindResponse {
         return WorkStageFindResponse(
-            workStage = lemonWorkStageTranslator.translate(entity.result),
+            workStage = entity.result?.let(lemonWorkStageTranslator::translate),
             hasErrors = entity.hasErrors,
             ok = entity.ok
         )

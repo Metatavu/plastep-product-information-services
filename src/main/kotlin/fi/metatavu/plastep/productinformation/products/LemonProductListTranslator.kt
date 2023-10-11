@@ -17,7 +17,7 @@ class LemonProductListTranslator :
     lateinit var lemonProductTranslator: LemonProductTranslator
 
     override fun translate(entity: ProductListResult): ProductsListResponse {
-        val products = entity.results.map(lemonProductTranslator::translate)
+        val products = entity.results?.map(lemonProductTranslator::translate)
 
         return ProductsListResponse(
             products = products,

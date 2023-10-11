@@ -381,7 +381,6 @@ components:
     ProductListResult:
       type: object
       required:
-        - results
         - has_next_page
         - has_errors
       properties:
@@ -401,7 +400,6 @@ components:
     GetProductResult:
       type: object
       required:
-        - result
         - ok
         - has_errors
       properties:
@@ -507,7 +505,6 @@ components:
     MachineListResult:
       type: object
       required:
-        - results
         - has_next_page
         - has_errors
       properties:
@@ -529,7 +526,6 @@ components:
       type: object
       required:
         - has_errors
-        - results
         - has_next_page
       properties:
         has_errors:
@@ -566,7 +562,6 @@ components:
       description: "Main work stage response"
       required:
         - ok
-        - result
         - has_errors
       properties:
         ok:
