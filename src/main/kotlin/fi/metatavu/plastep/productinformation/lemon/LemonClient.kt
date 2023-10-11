@@ -56,7 +56,8 @@ class LemonClient {
     fun findProduct(productId: Int): GetProductResult {
         val product = getProductsApi().getProduct(id = productId)
         if (product.hasErrors || !product.errors.isNullOrEmpty()) {
-            logger.error("Failed to get product ${getErrorsString(product.errors)}")
+            logger.error("Failed to find product with ID $productId.")
+            logger.error("Error from Lemonsoft ${getErrorsString(product.errors)}")
         }
 
         return product
@@ -124,7 +125,8 @@ class LemonClient {
         )
 
         if (response.hasErrors || !response.errors.isNullOrEmpty()) {
-            logger.error("Failed to get product ${getErrorsString(response.errors)}")
+            logger.error("Failed to list products from Lemonsoft.")
+            logger.error("Error message from Lemonsoft: ${getErrorsString(response.errors)}")
         }
 
         return response
@@ -146,7 +148,8 @@ class LemonClient {
         )
 
         if (response.hasErrors == true || !response.errors.isNullOrEmpty()) {
-            logger.error("Failed to get product structure ${getErrorsString(response.errors)}")
+            logger.error("Failed to get product structure for product code: $productCode, work number: $workNumber and level: $level")
+            logger.error("Error message from Lemonsoft: ${getErrorsString(response.errors)}")
         }
 
         return response
@@ -184,7 +187,8 @@ class LemonClient {
         )
 
         if (response.hasErrors || !response.errors.isNullOrEmpty()) {
-            logger.error("Failed to list machines ${getErrorsString(response.errors)}")
+            logger.error("Failed to list machines")
+            logger.error("Error message from Lemonsoft: ${getErrorsString(response.errors)}")
         }
 
         return response
@@ -200,7 +204,8 @@ class LemonClient {
         val workStage = getWorkStagesApi().findWorkStage(id = workStageId)
 
         if (workStage.hasErrors || !workStage.errors.isNullOrEmpty()) {
-            logger.error("Failed to find work stage ${getErrorsString(workStage.errors)}")
+            logger.error("Failed to find work stage with ID: $workStageId.")
+            logger.error("Error message from Lemonsoft: ${getErrorsString(workStage.errors)}")
         }
 
         return workStage
@@ -232,7 +237,8 @@ class LemonClient {
         )
 
         if (response.hasErrors || !response.errors.isNullOrEmpty()) {
-            logger.error("Failed to list work stages ${getErrorsString(response.errors)}")
+            logger.error("Failed to list work stages with filters: updated after: $filterUpdatedAfter, updated before: $filterUpdatedBefore, page: $filterPage, page size: $filterPageSize, state: $filterState")
+            logger.error("Error message from Lemonsoft: ${getErrorsString(response.errors)}")
         }
 
         return response
