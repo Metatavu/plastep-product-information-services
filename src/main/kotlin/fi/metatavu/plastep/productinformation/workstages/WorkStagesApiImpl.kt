@@ -47,10 +47,10 @@ class WorkStagesApiImpl: WorkStagesApi, AbstractApi() {
         }
 
         val workStages = lemonWorkStagesController.listWorkStages(
-                updatedAfter = parsedUpdatedAfter,
-                updatedBefore = parsedUpdatedBefore,
-                page = page ?: 1,
-                pageSize = pageSize ?: 100,
+            updatedAfter = parsedUpdatedAfter,
+            updatedBefore = parsedUpdatedBefore,
+            page = page ?: 1,
+            pageSize = pageSize ?: 100
         )
 
         return createOk(lemonWorkStageListTranslator.translate(workStages))

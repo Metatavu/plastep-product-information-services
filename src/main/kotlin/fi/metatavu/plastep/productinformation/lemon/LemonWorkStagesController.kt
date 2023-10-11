@@ -52,7 +52,7 @@ class LemonWorkStagesController {
             filterPageSize = pageSize
         )
 
-        val mainWorkStageIds = mainWorkStageResponse.results.map { it.id }
+        val mainWorkStageIds = mainWorkStageResponse.results?.map { it.id } ?: emptyList()
 
         val withFilledData = mainWorkStageIds.map {
             val foundWorkStage = findWorkStage(it)
@@ -62,7 +62,7 @@ class LemonWorkStagesController {
 
             foundWorkStage.result
         }
-        return mainWorkStageResponse to withFilledData
+        return mainWorkStageResponse to withFilledData.mapNotNull { it }
     }
 
 }
