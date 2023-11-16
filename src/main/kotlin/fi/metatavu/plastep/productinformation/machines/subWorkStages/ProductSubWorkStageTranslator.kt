@@ -10,6 +10,9 @@ import java.time.ZoneOffset
 import javax.enterprise.context.ApplicationScoped
 import javax.inject.Inject
 
+/**
+ * Translator for Lemonsoft product sub work stages
+ */
 @ApplicationScoped
 class ProductSubWorkStageTranslator : AbstractTranslator<WorkStagesAndProducts, fi.metatavu.plastep.productinformation.model.ProductSubWorkStage>() {
 

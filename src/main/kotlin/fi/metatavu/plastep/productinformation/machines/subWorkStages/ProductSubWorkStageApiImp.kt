@@ -32,7 +32,7 @@ class ProductSubWorkStageApiImp: ProductSubWorkStagesApi, AbstractApi() {
         )
 
         val allProducts = lemonProductsController.listProducts(
-            filterSku = workStages.map { it.productCode }.toTypedArray(),
+            filterSku = workStages.map { it.productCode }.distinct().toTypedArray(),
             pageSize = workStages.size,
             page = 1
         )
