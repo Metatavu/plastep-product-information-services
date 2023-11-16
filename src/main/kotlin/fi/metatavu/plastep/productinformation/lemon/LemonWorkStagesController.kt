@@ -3,6 +3,8 @@ package fi.metatavu.plastep.productinformation.lemon
 import fi.metatavu.plastep.lemon.client.models.MainWorkStage
 import fi.metatavu.plastep.lemon.client.models.MainWorkStageResponse
 import fi.metatavu.plastep.lemon.client.models.WorkStageListResponse
+import fi.metatavu.plastep.productinformation.model.WorkStageState
+import fi.metatavu.plastep.productinformation.workstages.LemonWorkStagesTranslator
 import org.slf4j.Logger
 import java.time.LocalDate
 import javax.enterprise.context.ApplicationScoped
@@ -19,6 +21,9 @@ class LemonWorkStagesController {
 
     @Inject
     lateinit var logger: Logger
+
+    @Inject
+    lateinit var lemonWorkStagesTranslator: LemonWorkStagesTranslator
 
     /**
      * Find workStage from Lemonsoft
@@ -63,6 +68,31 @@ class LemonWorkStagesController {
             foundWorkStage.result
         }
         return mainWorkStageResponse to withFilledData.mapNotNull { it }
+    }
+
+    /**
+     * Lists available work stages from lemonsoft
+     *
+     * @param state state filter
+     * @param machineCode machine code filter
+     * @return list of work stages
+     */
+    fun listSubWorkStages(
+        state: WorkStageState?,
+        machineCode: String?
+    ): List<fi.metatavu.plastep.lemon.client.models.SubWorkStage> {
+        val subWorkStages = lemonClient.listSubWorkStages(
+            machineCode = machineCode,
+        )
+
+        val filteredByState: List<fi.metatavu.plastep.lemon.client.models.SubWorkStage?>? = if (state == null) {
+            subWorkStages.results?.toList()
+        } else {
+            val stateInt = lemonWorkStagesTranslator.translateWorkStageState(state)
+            subWorkStages.results?.filter { it.state == stateInt }
+        }
+
+        return filteredByState?.filterNotNull() ?: emptyList()
     }
 
 }

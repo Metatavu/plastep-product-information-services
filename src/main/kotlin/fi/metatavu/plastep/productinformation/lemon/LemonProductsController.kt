@@ -33,15 +33,18 @@ class LemonProductsController {
      *
      * @param page page number. Page number starts from 1
      * @param pageSize page size.
+     * @param filterSku sku filter
      * @return list of products response
      */
     fun listProducts(
         page: Int,
-        pageSize: Int
+        pageSize: Int,
+        filterSku: Array<String>? = null
     ): ProductListResult {
         return lemonClient.listProducts(
             filterPage = page,
             filterPageSize = pageSize,
+            filterSku = filterSku
         )
     }
 

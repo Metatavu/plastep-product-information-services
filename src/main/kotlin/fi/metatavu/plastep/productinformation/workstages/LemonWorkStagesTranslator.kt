@@ -25,12 +25,21 @@ class LemonWorkStagesTranslator : AbstractTranslator<fi.metatavu.plastep.lemon.c
         )
     }
 
-    private fun translateWorkStageState(lemonState: Int): WorkStageState {
+    fun translateWorkStageState(lemonState: Int): WorkStageState {
         return when (lemonState) {
             2 -> WorkStageState.ACCEPTED
             3 -> WorkStageState.IN_PROGRESS
             4 -> WorkStageState.WAITING
             else -> WorkStageState.COMPLETED
+        }
+    }
+
+    fun translateWorkStageState(lemonState: WorkStageState): Int {
+        return when (lemonState) {
+            WorkStageState.ACCEPTED -> 2
+            WorkStageState.IN_PROGRESS -> 3
+            WorkStageState.WAITING -> 4
+            else -> 5
         }
     }
 

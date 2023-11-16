@@ -26,6 +26,7 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
         createProductStubs()
         createMachineStubs()
         createMainWorkStageStubs()
+        createAvailableWorkStageStubs()
 
         return mapOf(
             "lemon.rest.url" to "http://$host:$port",
@@ -239,6 +240,21 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
                     hasErrors = false
                 )), 200))
         )
+
+        // List products by sku filter
+        stubFor(
+            get(urlPathEqualTo("/api/products"))
+                .withQueryParams(mapOf(
+                    "filter.page" to equalTo("1"),
+                    "filter.page_size" to equalTo("1"),
+                    "filter.sku" to equalTo("000223")
+                ))
+                .willReturn(jsonResponse(objectMapper.writeValueAsString(ProductListResult(
+                    results = products.filter { it.sku == "000223" }.toTypedArray(),
+                    hasNextPage = false,
+                    hasErrors = false
+                )), 200))
+        )
     }
 
     /**
@@ -295,6 +311,30 @@ class LemonRestResource : QuarkusTestResourceLifecycleManager {
                     )
             )
         }
+    }
+
+    /**
+     * Available sub work stages stubs
+     */
+    private fun createAvailableWorkStageStubs() {
+        val objectMapper = jacksonObjectMapper()
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+
+        val subWorkStage = objectMapper.readValue<SubWorkStage>(this.javaClass.getResource("/lemon/test-sub-work-stage-1.json")!!)
+
+        stubFor(
+            get(urlPathEqualTo("/api/production/main_ws/sub_ws/available"))
+                .willReturn(
+                    jsonResponse(
+                        objectMapper.writeValueAsString(
+                            SubWorkStageListResponse(
+                                results = arrayOf(subWorkStage),
+                                hasErrors = false
+                            )
+                        ), 200
+                    )
+                )
+        )
     }
 
     override fun stop() {
