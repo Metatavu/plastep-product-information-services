@@ -1,5 +1,6 @@
 package fi.metatavu.plastep.productinformation.test.functional.tests
 
+import fi.metatavu.plastep.productinformation.client.models.WorkStageState
 import fi.metatavu.plastep.productinformation.test.functional.resources.LemonRestResource
 import io.quarkus.test.common.QuarkusTestResource
 import io.quarkus.test.junit.QuarkusTest
@@ -37,6 +38,10 @@ class ProductSubWorkStageTestIT: AbstractResourceTest() {
             assertEquals(5400.0.toFloat(), productSubWorkStages[0].workAmount)
             assertEquals(0.0.toFloat(), productSubWorkStages[0].workAmountDone)
 
+            val productSubWorkStagesCompleted = tb.admin.productSubWorkStages.list(
+                state = WorkStageState.COMPLETED
+            )
+            assertEquals(0, productSubWorkStagesCompleted.size)
 
             tb.integration.productSubWorkStages.assertListFailStatus(
                 403,
