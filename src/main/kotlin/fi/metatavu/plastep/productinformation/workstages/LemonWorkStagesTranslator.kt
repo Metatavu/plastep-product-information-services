@@ -34,15 +34,6 @@ class LemonWorkStagesTranslator : AbstractTranslator<fi.metatavu.plastep.lemon.c
         }
     }
 
-    fun translateWorkStageState(lemonState: WorkStageState): Int {
-        return when (lemonState) {
-            WorkStageState.ACCEPTED -> 2
-            WorkStageState.IN_PROGRESS -> 3
-            WorkStageState.WAITING -> 4
-            else -> 5
-        }
-    }
-
     private fun translateSubWorkStage(lemonSubWorkStage: fi.metatavu.plastep.lemon.client.models.SubWorkStage): SubWorkStage {
         return SubWorkStage(
             id = lemonSubWorkStage.id,
