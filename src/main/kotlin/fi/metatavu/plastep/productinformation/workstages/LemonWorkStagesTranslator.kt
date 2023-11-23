@@ -30,7 +30,9 @@ class LemonWorkStagesTranslator : AbstractTranslator<fi.metatavu.plastep.lemon.c
             2 -> WorkStageState.ACCEPTED
             3 -> WorkStageState.IN_PROGRESS
             4 -> WorkStageState.WAITING
-            else -> WorkStageState.COMPLETED
+            5 -> WorkStageState.INTERRUPTED
+            9 -> WorkStageState.COMPLETED
+            else -> WorkStageState.UNKNOWN
         }
     }
 
