@@ -108,7 +108,9 @@ class LemonWorkStagesController {
             WorkStageState.ACCEPTED -> result.filter { it.state == 2 }
             WorkStageState.IN_PROGRESS -> result.filter { it.state == 3 }
             WorkStageState.WAITING -> result.filter { it.state == 4 }
-            WorkStageState.COMPLETED -> result.filter { it.state != 2 && it.state != 3 && it.state != 4}
+            WorkStageState.INTERRUPTED -> result.filter { it.state == 5 }
+            WorkStageState.COMPLETED -> result.filter { it.state == 9 }
+            WorkStageState.UNKNOWN -> result.filter { it.state != 2 && it.state != 3 && it.state != 4 && it.state != 5 && it.state != 9 }
         }
     }
 }
