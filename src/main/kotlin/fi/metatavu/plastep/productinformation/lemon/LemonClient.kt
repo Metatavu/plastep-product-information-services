@@ -1,9 +1,6 @@
 package fi.metatavu.plastep.productinformation.lemon
 
-import fi.metatavu.plastep.lemon.client.apis.AuthenticationApi
-import fi.metatavu.plastep.lemon.client.apis.MachineApi
-import fi.metatavu.plastep.lemon.client.apis.ProductApi
-import fi.metatavu.plastep.lemon.client.apis.WorkStagesApi
+import fi.metatavu.plastep.lemon.client.apis.*
 import fi.metatavu.plastep.lemon.client.infrastructure.ApiClient
 import fi.metatavu.plastep.lemon.client.models.*
 import org.eclipse.microprofile.config.inject.ConfigProperty
@@ -245,6 +242,27 @@ class LemonClient {
     }
 
     /**
+     * Lists sub work stages
+     *
+     * @param machineCode optional machine code
+     * @return response
+     */
+    fun listSubWorkStages(
+        machineCode: String?
+    ): SubWorkStageListResponse {
+        val response = getSubWorkStageApi().listAvailableSubWorkStages(
+            machineCode = machineCode
+        )
+
+        if (response.hasErrors || !response.errors.isNullOrEmpty()) {
+            logger.error("Failed to list sub work stages with filters: machine code: $machineCode")
+            logger.error("Error message from Lemonsoft: ${getErrorsString(response.errors)}")
+        }
+
+        return response
+    }
+
+    /**
      * Returns initialized product API
      *
      * @return product API
@@ -253,6 +271,17 @@ class LemonClient {
         ensureSession()
 
         return ProductApi(
+            basePath = lemonRestUrl
+        )
+    }
+
+    /**
+     * Returns initialized sub work stages api
+     */
+    private fun getSubWorkStageApi(): SubWorkStagesApi {
+        ensureSession()
+
+        return SubWorkStagesApi(
             basePath = lemonRestUrl
         )
     }
