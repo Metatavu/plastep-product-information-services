@@ -3,9 +3,11 @@ package fi.metatavu.plastep.productinformation.lemon
 import fi.metatavu.plastep.lemon.client.apis.*
 import fi.metatavu.plastep.lemon.client.infrastructure.ApiClient
 import fi.metatavu.plastep.lemon.client.models.*
+import okhttp3.OkHttpClient
 import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.slf4j.Logger
 import java.time.LocalDate
+import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
 import javax.enterprise.context.RequestScoped
 import javax.inject.Inject
@@ -271,7 +273,8 @@ class LemonClient {
         ensureSession()
 
         return ProductApi(
-            basePath = lemonRestUrl
+            basePath = lemonRestUrl,
+            client = getClient()
         )
     }
 
@@ -282,7 +285,8 @@ class LemonClient {
         ensureSession()
 
         return SubWorkStagesApi(
-            basePath = lemonRestUrl
+            basePath = lemonRestUrl,
+            client = getClient()
         )
     }
 
@@ -295,7 +299,8 @@ class LemonClient {
         ensureSession()
 
         return MachineApi(
-            basePath = lemonRestUrl
+            basePath = lemonRestUrl,
+            client = getClient()
         )
     }
 
@@ -308,7 +313,8 @@ class LemonClient {
         ensureSession()
 
         return WorkStagesApi(
-            basePath = lemonRestUrl
+            basePath = lemonRestUrl,
+            client = getClient()
         )
     }
 
@@ -328,7 +334,8 @@ class LemonClient {
      */
     private fun login() {
         val authenticationApi = AuthenticationApi(
-            basePath = lemonRestUrl
+            basePath = lemonRestUrl,
+            client = getClient()
         )
 
         val result = authenticationApi.login(
@@ -351,5 +358,12 @@ class LemonClient {
      */
     private fun getErrorsString(errors: Array<Error>?): String {
         return errors?.joinToString(", ") { "${it.code} ${it.message}" } ?: ""
+    }
+
+    private fun getClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .connectTimeout(2, TimeUnit.MINUTES)
+            .readTimeout(2, TimeUnit.MINUTES)
+            .build()
     }
 }
