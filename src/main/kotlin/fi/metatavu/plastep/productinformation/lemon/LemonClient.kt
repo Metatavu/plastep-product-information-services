@@ -148,8 +148,7 @@ class LemonClient {
             )
 
         } catch (ex: Exception) {
-            logger.error("Failed to get product structure for product code: $productCode, work number: $workNumber and level: $level")
-            logger.error("Error message from Lemonsoft: ${ex.message}")
+            logger.error("Failed to get product structure for product code: $productCode, work number: $workNumber and level: $level", ex)
             return null
         }
         if (response.hasErrors == true || !response.errors.isNullOrEmpty()) {
