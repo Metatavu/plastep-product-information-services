@@ -25,7 +25,7 @@ class WorkStagesApiImpl: WorkStagesApi, AbstractApi() {
     lateinit var lemonWorkStageListTranslator: LemonWorkStageListTranslator
 
     override fun findWorkStage(workStageId: Long): Response {
-        val workStage = lemonWorkStagesController.findWorkStage(workStageId)
+        val workStage = lemonWorkStagesController.findWorkStage(workStageId) ?: return createNotFound("Work stage $workStageId not found")
         return createOk(lemonWorkStageFindTranslator.translate(workStage))
     }
 

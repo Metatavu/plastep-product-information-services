@@ -11,18 +11,18 @@ import javax.inject.Inject
  */
 @ApplicationScoped
 class LemonProductListTranslator :
-    AbstractTranslator<ProductListResult, ProductsListResponse>() {
+    AbstractTranslator<ProductListResult?, ProductsListResponse>() {
 
     @Inject
     lateinit var lemonProductTranslator: LemonProductTranslator
 
-    override fun translate(entity: ProductListResult): ProductsListResponse {
-        val products = entity.results?.map(lemonProductTranslator::translate)
+    override fun translate(entity: ProductListResult?): ProductsListResponse {
+        val products = entity?.results?.map(lemonProductTranslator::translate) ?: emptyList()
 
         return ProductsListResponse(
             products = products,
-            hasErrors = entity.hasErrors,
-            hasNextPage = entity.hasNextPage
+            hasErrors = entity?.hasErrors,
+            hasNextPage = entity?.hasNextPage ?: false
         )
     }
 

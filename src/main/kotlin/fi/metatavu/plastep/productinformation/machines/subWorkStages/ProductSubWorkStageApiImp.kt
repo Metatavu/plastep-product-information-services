@@ -38,7 +38,7 @@ class ProductSubWorkStageApiImp: ProductSubWorkStagesApi, AbstractApi() {
         )
 
         val productsWithWorkStages = workStages.map { workStage ->
-            val product = allProducts.results?.find { it.sku == workStage.productCode }
+            val product = allProducts?.results?.find { it.sku == workStage.productCode }
             WorkStagesAndProducts(workStage, product)
         }
         return createOk(productSubWorkStageTranslator.translate(productsWithWorkStages))

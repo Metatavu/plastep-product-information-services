@@ -22,7 +22,7 @@ class LemonProductsController {
      */
     fun findProduct(
         productId: Int
-    ): GetProductResult {
+    ): GetProductResult? {
         return lemonClient.findProduct(
             productId = productId
         )
@@ -40,7 +40,7 @@ class LemonProductsController {
         page: Int,
         pageSize: Int,
         filterSku: Array<String>? = null
-    ): ProductListResult {
+    ): ProductListResult? {
         return lemonClient.listProducts(
             filterPage = page,
             filterPageSize = pageSize,
@@ -54,7 +54,7 @@ class LemonProductsController {
      * @param productCode product code
      * @return product structure response
      */
-    fun getDefaultProductStructure(productCode: String): GetProductStructureResult {
+    fun getDefaultProductStructure(productCode: String): GetProductStructureResult? {
         return lemonClient.getProductStructure(
             productCode = productCode,
             workNumber = 0,

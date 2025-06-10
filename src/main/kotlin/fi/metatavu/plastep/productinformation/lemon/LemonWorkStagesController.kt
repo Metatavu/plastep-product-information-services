@@ -23,16 +23,13 @@ class LemonWorkStagesController {
     @Inject
     lateinit var logger: Logger
 
-    @Inject
-    lateinit var lemonWorkStagesTranslator: LemonWorkStagesTranslator
-
     /**
      * Find workStage from Lemonsoft
      *
      * @param workStageId workStage id
      * @return workStage response
      */
-    fun findWorkStage(workStageId: Long): MainWorkStageResponse {
+    fun findWorkStage(workStageId: Long): MainWorkStageResponse? {
         return lemonClient.findWorkStage(workStageId = workStageId)
     }
 
@@ -50,7 +47,7 @@ class LemonWorkStagesController {
         updatedBefore: LocalDate,
         page: Int,
         pageSize: Int
-    ): Pair<WorkStageListResponse, List<MainWorkStage>> {
+    ): Pair<WorkStageListResponse?, List<MainWorkStage>> {
         val mainWorkStageResponse = lemonClient.listWorkStages(
             filterUpdatedAfter = updatedAfter,
             filterUpdatedBefore = updatedBefore,
@@ -58,15 +55,15 @@ class LemonWorkStagesController {
             filterPageSize = pageSize
         )
 
-        val mainWorkStageIds = mainWorkStageResponse.results?.map { it.id } ?: emptyList()
+        val mainWorkStageIds = mainWorkStageResponse?.results?.map { it.id } ?: emptyList()
 
         val withFilledData = mainWorkStageIds.map {
             val foundWorkStage = findWorkStage(it)
-            if (foundWorkStage.hasErrors || !foundWorkStage.ok) {
+            if (foundWorkStage == null || foundWorkStage.hasErrors || !foundWorkStage.ok) {
                 logger.error("Failed to find workStage with id {}", it)
             }
 
-            foundWorkStage.result
+            foundWorkStage?.result
         }
         return mainWorkStageResponse to withFilledData.mapNotNull { it }
     }
@@ -87,9 +84,9 @@ class LemonWorkStagesController {
         )
 
         val filteredByState: List<SubWorkStage?>? = if (state == null) {
-            subWorkStages.results?.toList()
+            subWorkStages?.results?.toList()
         } else {
-            filterByWorkState(state, subWorkStages.results?.toList())
+            filterByWorkState(state, subWorkStages?.results?.toList())
         }
 
         return filteredByState?.filterNotNull() ?: emptyList()

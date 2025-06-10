@@ -52,13 +52,19 @@ class LemonClient {
      * @param productId product id
      * @return product search result lemon object
      */
-    fun findProduct(productId: Int): GetProductResult {
-        val product = getProductsApi().getProduct(id = productId)
+    fun findProduct(productId: Int): GetProductResult? {
+        val product = try {
+            getProductsApi().getProduct(id = productId)
+        } catch (ex: Exception) {
+            logger.error("Failed to find product with ID $productId.")
+            logger.error("Error from Lemonsoft: ${ex.message}")
+            return null
+        }
         if (product.hasErrors || !product.errors.isNullOrEmpty()) {
             logger.error("Failed to find product with ID $productId.")
             logger.error("Error from Lemonsoft ${getErrorsString(product.errors)}")
+            return null
         }
-
         return product
     }
 
@@ -102,32 +108,37 @@ class LemonClient {
         filterPage: Int? = null,
         filterPageSize: Int? = null,
         filterSearch: String? = null
-    ): ProductListResult {
-        val response = getProductsApi().listProducts(
-            filterName = filterName,
-            filterSku = filterSku,
-            filterWithImages = filterWithImages,
-            filterModifiedBefore = filterModifiedBefore,
-            filterModifiedAfter = filterModifiedAfter,
-            filterAttributeId = filterAttributeId,
-            filterExtraName = filterExtraName,
-            filterCategoryId = filterCategoryId,
-            filterGroupCode = filterGroupCode,
-            filterShowModels = filterShowModels,
-            filterShowNonactive = filterShowNonactive,
-            filterShelf = filterShelf,
-            filterShelfStock = filterShelfStock,
-            filterObjectIds = filterObjectIds,
-            filterPage = filterPage,
-            filterPageSize = filterPageSize,
-            filterSearch = filterSearch
-        )
-
+    ): ProductListResult? {
+        val response = try {
+            getProductsApi().listProducts(
+                filterName = filterName,
+                filterSku = filterSku,
+                filterWithImages = filterWithImages,
+                filterModifiedBefore = filterModifiedBefore,
+                filterModifiedAfter = filterModifiedAfter,
+                filterAttributeId = filterAttributeId,
+                filterExtraName = filterExtraName,
+                filterCategoryId = filterCategoryId,
+                filterGroupCode = filterGroupCode,
+                filterShowModels = filterShowModels,
+                filterShowNonactive = filterShowNonactive,
+                filterShelf = filterShelf,
+                filterShelfStock = filterShelfStock,
+                filterObjectIds = filterObjectIds,
+                filterPage = filterPage,
+                filterPageSize = filterPageSize,
+                filterSearch = filterSearch
+            )
+        } catch (ex: Exception) {
+            logger.error("Failed to list products from Lemonsoft.")
+            logger.error("Error message from Lemonsoft: ${ex.message}")
+            return null
+        }
         if (response.hasErrors || !response.errors.isNullOrEmpty()) {
             logger.error("Failed to list products from Lemonsoft.")
             logger.error("Error message from Lemonsoft: ${getErrorsString(response.errors)}")
+            return null
         }
-
         return response
     }
 
@@ -181,22 +192,27 @@ class LemonClient {
         filterPage: Int? = null,
         filterPageSize: Int? = null,
         filterSearch: String? = null
-    ): MachineListResult {
-        val response = getMachinesApi().listMachines(
-            filterCode = filterCode,
-            filterType = filterType,
-            filterIsDisabled = filterIsDisabled,
-            filterObjectIds = filterObjectIds,
-            filterPage = filterPage,
-            filterPageSize = filterPageSize,
-            filterSearch = filterSearch
-        )
-
+    ): MachineListResult? {
+        val response = try {
+            getMachinesApi().listMachines(
+                filterCode = filterCode,
+                filterType = filterType,
+                filterIsDisabled = filterIsDisabled,
+                filterObjectIds = filterObjectIds,
+                filterPage = filterPage,
+                filterPageSize = filterPageSize,
+                filterSearch = filterSearch
+            )
+        } catch (ex: Exception) {
+            logger.error("Failed to list machines")
+            logger.error("Error message from Lemonsoft: ${ex.message}")
+            return null
+        }
         if (response.hasErrors || !response.errors.isNullOrEmpty()) {
             logger.error("Failed to list machines")
             logger.error("Error message from Lemonsoft: ${getErrorsString(response.errors)}")
+            return null
         }
-
         return response
     }
 
@@ -206,14 +222,19 @@ class LemonClient {
      * @param workStageId work stage id
      * @return lemon work starge find response
      */
-    fun findWorkStage(workStageId: Long): MainWorkStageResponse {
-        val workStage = getWorkStagesApi().findWorkStage(id = workStageId)
-
+    fun findWorkStage(workStageId: Long): MainWorkStageResponse? {
+        val workStage = try {
+            getWorkStagesApi().findWorkStage(id = workStageId)
+        } catch (ex: Exception) {
+            logger.error("Failed to find work stage with ID: $workStageId.")
+            logger.error("Error message from Lemonsoft: ${ex.message}")
+            return null
+        }
         if (workStage.hasErrors || !workStage.errors.isNullOrEmpty()) {
             logger.error("Failed to find work stage with ID: $workStageId.")
             logger.error("Error message from Lemonsoft: ${getErrorsString(workStage.errors)}")
+            return null
         }
-
         return workStage
     }
 
@@ -233,20 +254,25 @@ class LemonClient {
         filterPage: Int,
         filterPageSize: Int,
         filterState: Int? = null
-    ): WorkStageListResponse {
-        val response = getWorkStagesApi().listWorkStages(
-            filterUpdatedAfter = filterUpdatedAfter.toString(),
-            filterUpdatedBefore = filterUpdatedBefore.toString(),
-            filterPage = filterPage,
-            filterPageSize = filterPageSize,
-            filterState = filterState
-        )
-
+    ): WorkStageListResponse? {
+        val response = try {
+            getWorkStagesApi().listWorkStages(
+                filterUpdatedAfter = filterUpdatedAfter.toString(),
+                filterUpdatedBefore = filterUpdatedBefore.toString(),
+                filterPage = filterPage,
+                filterPageSize = filterPageSize,
+                filterState = filterState
+            )
+        } catch (ex: Exception) {
+            logger.error("Failed to list work stages with filters: updated after: $filterUpdatedAfter, updated before: $filterUpdatedBefore, page: $filterPage, page size: $filterPageSize, state: $filterState")
+            logger.error("Error message from Lemonsoft: ${ex.message}")
+            return null
+        }
         if (response.hasErrors || !response.errors.isNullOrEmpty()) {
             logger.error("Failed to list work stages with filters: updated after: $filterUpdatedAfter, updated before: $filterUpdatedBefore, page: $filterPage, page size: $filterPageSize, state: $filterState")
             logger.error("Error message from Lemonsoft: ${getErrorsString(response.errors)}")
+            return null
         }
-
         return response
     }
 
@@ -258,16 +284,21 @@ class LemonClient {
      */
     fun listSubWorkStages(
         machineCode: String?
-    ): SubWorkStageListResponse {
-        val response = getSubWorkStageApi().listAvailableSubWorkStages(
-            machineCode = machineCode
-        )
-
+    ): SubWorkStageListResponse? {
+        val response = try {
+            getSubWorkStageApi().listAvailableSubWorkStages(
+                machineCode = machineCode
+            )
+        } catch (ex: Exception) {
+            logger.error("Failed to list sub work stages with filters: machine code: $machineCode")
+            logger.error("Error message from Lemonsoft: ${ex.message}")
+            return null
+        }
         if (response.hasErrors || !response.errors.isNullOrEmpty()) {
             logger.error("Failed to list sub work stages with filters: machine code: $machineCode")
             logger.error("Error message from Lemonsoft: ${getErrorsString(response.errors)}")
+            return null
         }
-
         return response
     }
 
