@@ -31,7 +31,7 @@ class ProductsApiImpl: ProductsApi, AbstractApi() {
             return createForbidden("Only integration users can access this resource")
         }
 
-        val lemonProduct = lemonProductsController.findProduct(id)
+        val lemonProduct = lemonProductsController.findProduct(id) ?: return createNotFound("Product $id not found")
         return createOk(lemonProductFindTranslator.translate(lemonProduct))
     }
 

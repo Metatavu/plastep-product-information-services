@@ -10,16 +10,16 @@ import javax.inject.Inject
  * Translates Lemon machine list response to REST machine list response
  */
 @ApplicationScoped
-class LemonMachineListTranslator : AbstractTranslator<MachineListResult, MachinesListResponse>() {
+class LemonMachineListTranslator : AbstractTranslator<MachineListResult?, MachinesListResponse>() {
 
     @Inject
     lateinit var lemonMachineTranslator: LemonMachineTranslator
 
-    override fun translate(entity: MachineListResult): MachinesListResponse {
+    override fun translate(entity: MachineListResult?): MachinesListResponse {
         return MachinesListResponse(
-            machines = entity.results?.map(lemonMachineTranslator::translate),
-            hasErrors = entity.hasErrors,
-            hasNextPage = entity.hasNextPage
+            machines = entity?.results?.map(lemonMachineTranslator::translate),
+            hasErrors = entity?.hasErrors ?: true,
+            hasNextPage = entity?.hasNextPage ?: false
         )
     }
 
