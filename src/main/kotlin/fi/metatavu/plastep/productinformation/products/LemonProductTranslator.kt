@@ -19,15 +19,17 @@ class LemonProductTranslator : AbstractTranslator<fi.metatavu.plastep.lemon.clie
     lateinit var lemonProductsController: LemonProductsController
 
     override fun translate(entity: fi.metatavu.plastep.lemon.client.models.Product): Product {
-        val structure = lemonProductsController.getDefaultProductStructure(productCode = entity.sku).result
-        val childProducts = structure?.nodes?.mapNotNull(ProductStructureNode::node) ?: emptyList()
+        val structure = lemonProductsController.getDefaultProductStructure(productCode = entity.sku)
+        val childProducts = if (structure?.ok == true) {
+            structure.result?.nodes?.mapNotNull(ProductStructureNode::node)
+        } else null
 
         return Product(
             id = entity.id,
             name = entity.name,
             productCode = entity.sku,
-            childProductCodes = childProducts.mapNotNull { it.productCode },
-            childProductIds = childProducts.mapNotNull { it.productId }
+            childProductCodes = childProducts?.mapNotNull { it.productCode } ?: emptyList(),
+            childProductIds = childProducts?.mapNotNull { it.productId } ?: emptyList(),
         )
     }
 

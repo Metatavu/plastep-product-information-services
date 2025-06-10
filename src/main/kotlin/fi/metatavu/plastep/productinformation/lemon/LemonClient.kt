@@ -139,16 +139,23 @@ class LemonClient {
      * @param level Structure level to be fetched
      * @return product structure response lemon object
      */
-    fun getProductStructure(productCode: String, workNumber: Int, level: Int): GetProductStructureResult {
-        val response = getProductsApi().getProductStructure(
-            productCode = productCode,
-            workNumber = workNumber,
-            level = level
-        )
+    fun getProductStructure(productCode: String, workNumber: Int, level: Int): GetProductStructureResult? {
+        val response = try {
+            getProductsApi().getProductStructure(
+                productCode = productCode,
+                workNumber = workNumber,
+                level = level
+            )
 
+        } catch (ex: Exception) {
+            logger.error("Failed to get product structure for product code: $productCode, work number: $workNumber and level: $level")
+            logger.error("Error message from Lemonsoft: ${ex.message}")
+            return null
+        }
         if (response.hasErrors == true || !response.errors.isNullOrEmpty()) {
             logger.error("Failed to get product structure for product code: $productCode, work number: $workNumber and level: $level")
             logger.error("Error message from Lemonsoft: ${getErrorsString(response.errors)}")
+            return null
         }
 
         return response
