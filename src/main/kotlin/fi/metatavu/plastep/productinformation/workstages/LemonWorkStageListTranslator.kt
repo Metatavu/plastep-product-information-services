@@ -18,7 +18,7 @@ class LemonWorkStageListTranslator: AbstractTranslator<Pair<WorkStageListRespons
     override fun translate(entity: Pair<WorkStageListResponse?, List<MainWorkStage>>): WorkStagesListResponse {
         return WorkStagesListResponse(
             workStages = entity.second.map { lemonWorkStageTranslator.translate(it) },
-            hasErrors = entity.first?.hasErrors,
+            hasErrors = entity.first?.hasErrors ?: true,
             hasNextPage = entity.first?.hasNextPage ?: false,
         )
     }

@@ -21,7 +21,7 @@ class LemonProductListTranslator :
 
         return ProductsListResponse(
             products = products,
-            hasErrors = entity?.hasErrors,
+            hasErrors = entity?.hasErrors ?: true,
             hasNextPage = entity?.hasNextPage ?: false
         )
     }
