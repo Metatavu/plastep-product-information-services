@@ -11,15 +11,15 @@ import javax.inject.Inject
  * Translates the Lemon API WorkStageListResponse to the integration WorkStagesListResponse
  */
 @ApplicationScoped
-class LemonWorkStageListTranslator: AbstractTranslator<Pair<WorkStageListResponse, List<MainWorkStage>>, WorkStagesListResponse>() {
+class LemonWorkStageListTranslator: AbstractTranslator<Pair<WorkStageListResponse?, List<MainWorkStage>>, WorkStagesListResponse>() {
     @Inject
     lateinit var lemonWorkStageTranslator: LemonWorkStagesTranslator
 
-    override fun translate(entity: Pair<WorkStageListResponse, List<MainWorkStage>>): WorkStagesListResponse {
+    override fun translate(entity: Pair<WorkStageListResponse?, List<MainWorkStage>>): WorkStagesListResponse {
         return WorkStagesListResponse(
             workStages = entity.second.map { lemonWorkStageTranslator.translate(it) },
-            hasErrors = entity.first.hasErrors,
-            hasNextPage = entity.first.hasNextPage
+            hasErrors = entity.first?.hasErrors ?: true,
+            hasNextPage = entity.first?.hasNextPage ?: false,
         )
     }
 

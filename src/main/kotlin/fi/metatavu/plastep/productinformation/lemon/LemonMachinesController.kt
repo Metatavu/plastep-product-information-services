@@ -23,7 +23,7 @@ class LemonMachinesController {
     fun listMachines(
         page: Int,
         pageSize: Int
-    ): MachineListResult {
+    ): MachineListResult? {
         return lemonClient.listMachines(
             filterPage = page,
             filterPageSize = pageSize,
